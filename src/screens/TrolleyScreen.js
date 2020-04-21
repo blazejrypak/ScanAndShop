@@ -1,6 +1,6 @@
 import {updateTrolleyItem} from "../actions";
 import {FlatList, StyleSheet, Text, View} from "react-native";
-import {ListItem} from "react-native-elements";
+import {Icon, ListItem} from "react-native-elements";
 import Counter from "../components/Counter";
 import * as React from "react";
 
@@ -30,6 +30,9 @@ function TrolleyScreen({ trolley, dispatch, navigation }) {
           data={trolley.trolleyItems}
           renderItem={renderItem}
         />
+      </View>
+      <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
+        <Icon raised reverse type='MaterialIcons' name='payment' size={35} onPress={() => navigation.navigate('PayScreen')}/>
       </View>
       <View style={{flex: 2,  backgroundColor: 'steelblue', flexDirection: 'row', justifyContent: 'space-between'}}>
         <View style={styles.infoContainer}>
@@ -61,14 +64,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     // borderRadius: 10,
-    padding: 10,
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowRadius: 5,
-    shadowOpacity: 1.0
+    // padding: 10,
+    // shadowColor: '#000000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2
+    // },
+    // shadowRadius: 5,
+    // shadowOpacity: 0.1
   }
 });
 export default TrolleyScreen;

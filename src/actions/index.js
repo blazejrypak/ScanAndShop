@@ -7,7 +7,7 @@ import {
 
   ADD_SHOPPING_LIST_ITEM,
   UPDATE_SHOPPING_LIST_ITEM,
-  CHANGE_INPUT_ITEM_NAME
+  CHANGE_INPUT_ITEM_NAME, DELETE_SHOPPING_LIST_ITEM
 } from "../constants/action_types";
 
 export const addTrolleyItem = (name, price, count) => ({
@@ -38,6 +38,13 @@ export function  updateShoppingListItem(id, count) {
     type: UPDATE_SHOPPING_LIST_ITEM,
     id,
     count
+  }
+}
+
+export function  deleteShoppingListItem(id) {
+  return {
+    type: DELETE_SHOPPING_LIST_ITEM,
+    id
   }
 }
 

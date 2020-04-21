@@ -41,6 +41,11 @@ const shoppingListReducer = (state = initialState, action) => {
         ...state,
         shoppingList: state.shoppingList.map(item => item.id === action.id ? {...item, count: action.count} : item),
       };
+    case DELETE_SHOPPING_LIST_ITEM:
+      return  {
+        ...state,
+        shoppingList: state.shoppingList.filter(item => item.id !== action.id),
+      };
     case CHANGE_INPUT_ITEM_NAME:
       return {
         ...state,

@@ -10,6 +10,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ScannerScreen from "./src/screens/ScannerScreen";
 import TrolleyScreen from "./src/screens/TrolleyScreen";
 import ShoppingListScreen from "./src/screens/ShoppingListScreen";
+import {Button} from "react-native-elements";
+import PayScreen from "./src/screens/PayScreen";
 
 
 // Connect the screens to Redux
@@ -21,6 +23,7 @@ const Tab = createBottomTabNavigator();
 
 let TrolleyContainer = connect(state => ({ trolley: state.trolley }))(TrolleyScreen);
 let ShoppingListContainer = connect(state => ({ shoppingList: state.shoppingList }))(ShoppingListScreen);
+let PayContainer = connect(state => ({ shoppingList: state.shoppingList }))(PayScreen);
 let ScannerContainer = connect(state => ({}))(ScannerScreen);
 
 function ShoppingContainer() {
@@ -28,7 +31,10 @@ function ShoppingContainer() {
     <Tab.Navigator>
       <Tab.Screen name="ShoppingList" component={ShoppingListContainer} />
       <Tab.Screen name="Scan" component={ScannerContainer} />
-      <Tab.Screen name="Trolley" component={TrolleyContainer} />
+      <Tab.Screen
+        name="Trolley"
+        component={TrolleyContainer}
+      />
     </Tab.Navigator>
   );
 }
@@ -40,7 +46,14 @@ export default function App() {
       <NavigationContainer>
         <RootStack.Navigator initialRouteName="Home">
           <RootStack.Screen name="Home" component={HomeContainer} />
-          <RootStack.Screen name="Shopping" component={ShoppingContainer} />
+          <RootStack.Screen
+            name="Shopping"
+            component={ShoppingContainer}
+          />
+          <RootStack.Screen
+            name="PayScreen"
+            component={PayContainer}
+          />
         </RootStack.Navigator>
       </NavigationContainer>
     </Provider>
