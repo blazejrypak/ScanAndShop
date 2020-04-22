@@ -1,5 +1,5 @@
-import {updateTrolleyItem} from "../actions";
-import {FlatList, StyleSheet, Text, View} from "react-native";
+import { deleteTrolleyListItem, updateTrolleyItem} from "../actions";
+import {Alert, FlatList, StyleSheet, Text, View} from "react-native";
 import {Icon, ListItem} from "react-native-elements";
 import Counter from "../components/Counter";
 import * as React from "react";
@@ -9,7 +9,19 @@ function TrolleyScreen({ trolley, dispatch, navigation }) {
 
   function onChange(number, type, id) {
     console.log("[LIST COUNTER] number: ", number, " type: ", type, " id:", id); // 1, + or -
-    updateIt(id, number);
+    const result = trolley.trolleyItems.filter(item => item.id === id);
+    if (!number) {
+      Alert.alert(
+        'Delete this item?',
+        result[0].name,
+        [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          {text: 'OK', onPress: () => dispatch(deleteTrolleyListItem(id))},
+        ],
+      );
+    } else {
+      updateIt(id, number);
+    }
   }
 
   const keyExtractor = (item, index) => index.toString()
@@ -18,7 +30,7 @@ function TrolleyScreen({ trolley, dispatch, navigation }) {
     <ListItem
       title={item.name}
       bottomDivider
-      rightElement={() => (<View><Counter start={item.count} min={1} max={50} id={item.id} onChange={onChange.bind(this)} /></View>)}
+      rightElement={() => (<View><Counter start={item.count} min={0} max={50} id={item.id} onChange={onChange.bind(this)} /></View>)}
     />
   );
 

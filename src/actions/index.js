@@ -1,5 +1,5 @@
 let nextTrolleyItemId = 4;
-let nextShoppingListItemId = 1;
+let nextShoppingListItemId = 4;
 import {
   ADD_TROLLEY_ITEM,
   UPDATE_TROLLEY_ITEM,
@@ -64,7 +64,7 @@ export const register = (user) => {
 }
 export const addTrolleyItem = (name, price, count, barcode) => {
   let parsed_data = {
-    name: `Item ${nextTrolleyItemId}`,
+    name: `Item ${nextTrolleyItemId++}`,
     price: 5,
     count: 1,
     barcode: barcode
@@ -110,7 +110,7 @@ export function updateTrolleyItem(id, count) {
 
 export const addShoppingListItem = (name, count) => ({
   type: ADD_SHOPPING_LIST_ITEM,
-  id: nextShoppingListItemId,
+  id: nextShoppingListItemId++,
   name,
   count
 });
@@ -126,6 +126,13 @@ export function updateShoppingListItem(id, count) {
 export function deleteShoppingListItem(id) {
   return {
     type: DELETE_SHOPPING_LIST_ITEM,
+    id
+  }
+}
+
+export function deleteTrolleyListItem(id) {
+  return {
+    type: DELETE_TROLLEY_ITEM,
     id
   }
 }

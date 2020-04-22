@@ -1,7 +1,7 @@
 import {
   ADD_TROLLEY_ITEM,
   UPDATE_TROLLEY_ITEM,
-  DELETE_TROLLEY_ITEM
+  DELETE_TROLLEY_ITEM, DELETE_SHOPPING_LIST_ITEM
 } from "../constants/action_types";
 
 const initialState = {
@@ -67,6 +67,11 @@ const trolleyReducer = (state = initialState, action) => {
       }
       newSt.trolleySum = sum;
       return newSt;
+    case DELETE_TROLLEY_ITEM:
+      return  {
+        ...state,
+        trolleyItems: state.trolleyItems.filter(item => item.id !== action.id),
+      };
     default:
       return state;
   }
