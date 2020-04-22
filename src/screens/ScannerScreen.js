@@ -7,7 +7,7 @@ import {DEFAUL_COUNT, DEFAUL_PRICE} from "../constants/constants";
 function ScannerScreen({ dispatch, navigation }) {
   function onBarCodeScanned(type, data) {
     console.log("[BAR CODE SCANNED] type: ", type, " data: ", data);
-    dispatch(addTrolleyItem(data.toString(), DEFAUL_PRICE, DEFAUL_COUNT));
+    dispatch(addTrolleyItem(data.toString(), DEFAUL_PRICE, DEFAUL_COUNT, data.toString()));
     navigation.navigate('Trolley');
   }
 

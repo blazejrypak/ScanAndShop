@@ -28,7 +28,7 @@ const Tab = createBottomTabNavigator();
 
 let TrolleyContainer = connect(state => ({trolley: state.trolley}))(TrolleyScreen);
 let ShoppingListContainer = connect(state => ({shoppingList: state.shoppingList}))(ShoppingListScreen);
-let PayContainer = connect(state => ({shoppingList: state.shoppingList}))(PayScreen);
+let PayContainer = connect(state => ({trolley: state.trolley}))(PayScreen);
 let ScannerContainer = connect(state => ({}))(ScannerScreen);
 
 function ShoppingContainer() {

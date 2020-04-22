@@ -62,16 +62,7 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    // borderRadius: 10,
-    // padding: 10,
-    // shadowColor: '#000000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2
-    // },
-    // shadowRadius: 5,
-    // shadowOpacity: 0.1
+    backgroundColor: '#fff'
   }
 });
 export default TrolleyScreen;

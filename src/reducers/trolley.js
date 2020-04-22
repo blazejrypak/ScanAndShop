@@ -48,7 +48,7 @@ const trolleyReducer = (state = initialState, action) => {
     case ADD_TROLLEY_ITEM:
       let newState = {
         ...state,
-        trolleyItems: [...state.trolleyItems, {id: action.id, name: action.name, price: action.price, count: action.count, barcode: 456}]
+        trolleyItems: [...state.trolleyItems, {id: action.id, name: action.name, price: action.price, count: action.count, barcode: action.barcode}]
       };
       let newSum = 0;
       for (let i = 0; i < newState.trolleyItems.length; i++) {
