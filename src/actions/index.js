@@ -1,3 +1,5 @@
+import {_retrieveData, _storeData, AUTH_TOKEN, AUTH_TOKEN_KEY, authHeader, getAuthToken} from "../_helpers/auth_header";
+
 let nextTrolleyItemId = 4;
 let nextShoppingListItemId = 4;
 import {
@@ -11,20 +13,42 @@ import {
 } from "../constants/action_types";
 
 import {alertConstants, userConstants} from "../constants/action_types"
-import {get_product_data} from "../services/tesco_shopping"
+import {AsyncStorage} from "react-native";
+
+let DOMAIN = '10.10.10.48'
 
 export const login = (username, password) => {
-  const user = {username: username, email: 'example@example.sk', password: password};
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: username,
+      password: password,
+    }),
+  }
+  const user = {username: username, password: password};
   return dispatch => {
     dispatch(request(user));
-    if (username === 'bubo') {
-      dispatch(success(user));
-      dispatch(alertActions.success("Logged in"));
-    } else {
-      dispatch(failure('error wrong username'))
-      dispatch(alertActions.error("error to log in"));
-    }
-  };
+    fetch(`http://${DOMAIN}:8080/login`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          dispatch(failure('error wrong username'));
+          dispatch(alertActions.error("error to log in"));
+          return Promise.reject(response);
+        } else {
+          _storeData(AUTH_TOKEN_KEY, response.headers.get('Authorization'))
+          dispatch(success(user));
+          dispatch(alertActions.success("Logged in"));
+        }
+      })
+      .catch(err => {
+        dispatch(failure('error wrong username'));
+        dispatch(alertActions.error("error to log in"));
+      });
+  }
 
   function request(user) {
     return {type: userConstants.LOGIN_REQUEST, user}
@@ -39,16 +63,40 @@ export const login = (username, password) => {
   }
 }
 
-function logout() {
+export function logout() {
   return {type: userConstants.LOGOUT};
 }
 
 export const register = (user) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: user.username,
+      password: user.password,
+    }),
+  }
   return dispatch => {
     dispatch(request(user));
-    dispatch(success(user));
-    dispatch(alertActions.success('Registration successful'))
-  };
+    fetch(`http://${DOMAIN}:8080/users/sign-up`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          dispatch(failure('error'));
+          dispatch(alertActions.error("error to sign up"));
+          return Promise.reject(response);
+        } else {
+          dispatch(success(user));
+          dispatch(alertActions.success('Registration successful'));
+        }
+      })
+      .catch(err => {
+        dispatch(failure('error'));
+        dispatch(alertActions.error("error to sign up"));
+      })
+  }
 
   function request(user) {
     return {type: userConstants.REGISTER_REQUEST, user}

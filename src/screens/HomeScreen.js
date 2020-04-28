@@ -1,12 +1,13 @@
-import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import * as React from "react";
 import {NavigationContainer} from "@react-navigation/native";
 import {createMaterialBottomTabNavigator} from "@react-navigation/material-bottom-tabs";
+import {logout} from "../actions";
 
 const Tab = createMaterialBottomTabNavigator();
 
-function HomeScreen({ count, dispatch, navigation }) {
+function HomeScreen({ auth, dispatch, navigation }) {
   return (
      <View style={styles.container}>
       {/*<Text style={styles.paragraph}>{count}</Text>*/}
@@ -27,7 +28,15 @@ function HomeScreen({ count, dispatch, navigation }) {
     {/*    title="Scan the barcode"*/}
     {/*    onPress={() => navigation.navigate('Shopping')}*/}
     {/*  />*/}
-      <TouchableOpacity
+       {auth.loggedIn &&
+       <TouchableOpacity style={styles.logoutBtn} onPress={() => dispatch(logout())}>
+         <Text
+           style={styles.logoutText}
+         >LOGOUT</Text>
+       </TouchableOpacity>
+
+       }
+       <TouchableOpacity
         style={{
           borderWidth:1,
           borderColor:'rgba(0,0,0,0.2)',
@@ -61,5 +70,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  logoutText:{
+    color:"black",
+    fontWeight: "bold",
+  },
+  logoutBtn:{
+    width:"80%",
+    backgroundColor:"#1f8aff",
+    borderRadius:25,
+    height:50,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop:40,
+    marginBottom:10
   },
 });

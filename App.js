@@ -18,7 +18,7 @@ import {authentication} from "./src/reducers/authReducer";
 
 
 // Connect the screens to Redux
-let HomeContainer = connect(state => ({count: state}))(HomeScreen);
+let HomeContainer = connect(state => ({auth: state.authentication}))(HomeScreen);
 let LoginContainer = connect(state => ({auth: state.authentication}))(LoginScreen);
 let SignUpContainer = connect(state => ({auth: state.registration}))(SignUpScreen);
 // Create our stack navigator
