@@ -2,6 +2,7 @@ import {userConstants} from "../constants/action_types";
 
 const initialState = {
   user: null,
+  jwt: null,
   loggingIn: false,
   loggedIn: false
 }
@@ -17,7 +18,8 @@ export const authentication = (state=initialState, action) =>  {
       return {
         loggedIn: true,
         loggingIn: false,
-        user: action.user
+        user: action.user,
+        jwt: action.jwt
       };
     case userConstants.LOGIN_FAILURE:
       return {

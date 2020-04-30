@@ -1,10 +1,10 @@
-import { deleteTrolleyListItem, updateTrolleyItem} from "../actions";
+import {deleteTrolleyListItem, getTrolley, getTrolleyItems, updateTrolleyItem} from "../actions";
 import {Alert, FlatList, StyleSheet, Text, View} from "react-native";
 import {Icon, ListItem} from "react-native-elements";
 import Counter from "../components/Counter";
 import * as React from "react";
 
-function TrolleyScreen({ trolley, dispatch, navigation }) {
+function TrolleyScreen({ trolley, jwt, dispatch, navigation }) {
   const updateIt = (id, number) => dispatch(updateTrolleyItem(id, number));
 
   function onChange(number, type, id) {
@@ -28,12 +28,15 @@ function TrolleyScreen({ trolley, dispatch, navigation }) {
 
   const renderItem = ({ item }) => (
     <ListItem
-      title={item.name}
+      title={item.product.name}
       bottomDivider
-      rightElement={() => (<View><Counter start={item.count} min={0} max={50} id={item.id} onChange={onChange.bind(this)} /></View>)}
+      rightElement={() => (<View><Counter start={item.quantity} min={0} max={50} id={item.id} onChange={onChange.bind(this)} /></View>)}
     />
   );
 
+  if (trolley.trolleyId === null){
+    dispatch(getTrolley(jwt));
+  }
   return (
     <View style={{flex: 1}}>
       <View style={{flex: 8, backgroundColor: 'white'}}>

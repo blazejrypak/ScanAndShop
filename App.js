@@ -26,10 +26,10 @@ let RootStack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
-let TrolleyContainer = connect(state => ({trolley: state.trolley}))(TrolleyScreen);
-let ShoppingListContainer = connect(state => ({shoppingList: state.shoppingList}))(ShoppingListScreen);
-let PayContainer = connect(state => ({trolley: state.trolley}))(PayScreen);
-let ScannerContainer = connect(state => ({}))(ScannerScreen);
+let TrolleyContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(TrolleyScreen);
+let ShoppingListContainer = connect(state => ({shoppingList: state.shoppingList, jwt: state.authentication.jwt}))(ShoppingListScreen);
+let PayContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(PayScreen);
+let ScannerContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(ScannerScreen);
 
 function ShoppingContainer() {
   return (

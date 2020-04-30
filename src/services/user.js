@@ -1,6 +1,3 @@
-import {authHeader} from "../_helpers/auth_header";
-import {AsyncStorage} from "react-native";
-
 let DOMAIN = '10.10.10.48'
 
 export function auth_login(username, password) {

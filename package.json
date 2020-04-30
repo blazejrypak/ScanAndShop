@@ -5,7 +5,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest",
+    "test:watch": "npm test -- --watch"
   },
   "dependencies": {
     "@expo/vector-icons": "latest",
@@ -14,6 +16,7 @@
     "@react-navigation/material-bottom-tabs": "^5.1.0",
     "@react-navigation/native": "^5.0.8",
     "@react-navigation/stack": "^5.1.0",
+    "axios": "^0.19.2",
     "expo": "~36.0.0",
     "expo-barcode-scanner": "~8.0.0",
     "react": "~16.9.0",
@@ -39,7 +42,10 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "babel-preset-expo": "~8.0.0",
-    "redux-devtools": "^3.5.0"
+    "fetch-mock": "^9.4.0",
+    "jest": "^25.5.2",
+    "redux-devtools": "^3.5.0",
+    "redux-mock-store": "^1.5.4"
   },
   "private": true
 }

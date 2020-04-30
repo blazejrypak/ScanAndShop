@@ -4,10 +4,10 @@ import ScanBarCode from "../components/ScanBarCode";
 import {addTrolleyItem} from "../actions";
 import {DEFAUL_COUNT, DEFAUL_PRICE} from "../constants/constants";
 
-function ScannerScreen({ dispatch, navigation }) {
+function ScannerScreen({ trolley, jwt, dispatch, navigation }) {
   function onBarCodeScanned(type, data) {
     console.log("[BAR CODE SCANNED] type: ", type, " data: ", data);
-    dispatch(addTrolleyItem(data.toString(), DEFAUL_PRICE, DEFAUL_COUNT, data.toString()));
+    dispatch(addTrolleyItem(data.toString(), DEFAUL_PRICE, DEFAUL_COUNT, data.toString(), trolley.trolleyId, jwt));
     navigation.navigate('Trolley');
   }
 

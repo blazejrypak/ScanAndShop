@@ -1,35 +1,15 @@
 import {
+  GET_TROLLEY,
   ADD_TROLLEY_ITEM,
   UPDATE_TROLLEY_ITEM,
   DELETE_TROLLEY_ITEM, DELETE_SHOPPING_LIST_ITEM
 } from "../constants/action_types";
 
 const initialState = {
-  trolleyItems: [
-    {
-      id: 1,
-      name: "Mrkva",
-      price: 20,
-      count: 3,
-      barcode: 54654,
-    },
-    {
-      id: 2,
-      name: "Jablko",
-      price: 15,
-      count: 1,
-      barcode: 54654,
-    },
-    {
-      id: 3,
-      name: "Hraskok",
-      price: 30,
-      count: 5,
-      barcode: 54654,
-    }
-  ],
-  trolleySum: 58,
-  trolleyWeight: 4500,
+  trolleyId: null,
+  trolleyItems: [],
+  trolleySum: 0,
+  trolleyWeight: 0,
 };
 
 
@@ -37,7 +17,7 @@ function sum(prev, next){
   return prev + next;
 }
 function price(item){
-  return item.price;
+  return item.product.price;
 }
 
 const trolleyReducer = (state = initialState, action) => {
@@ -48,22 +28,26 @@ const trolleyReducer = (state = initialState, action) => {
     case ADD_TROLLEY_ITEM:
       let newState = {
         ...state,
-        trolleyItems: [...state.trolleyItems, {id: action.id, name: action.name, price: action.price, count: action.count, barcode: action.barcode}]
+        trolleyItems: [...state.trolleyItems, action.item]
       };
       let newSum = 0;
       for (let i = 0; i < newState.trolleyItems.length; i++) {
-        newSum += (newState.trolleyItems[i].price * newState.trolleyItems[i].count);
+        if (newState.trolleyItems[i] !== undefined) {
+          newSum += (newState.trolleyItems[i].product.price * newState.trolleyItems[i].quantity);
+        }
       }
       newState.trolleySum = newSum;
       return newState;
     case UPDATE_TROLLEY_ITEM:
       let newSt = {
         ...state,
-        trolleyItems: state.trolleyItems.map(item => item.id === action.id ? {...item, count: action.count} : item),
+        trolleyItems: state.trolleyItems.map(item => item.id === action.id ? {...item, quantity: action.count} : item),
       };
       let sum = 0;
       for (let i = 0; i < newSt.trolleyItems.length; i++) {
-        sum += newSt.trolleyItems[i].price * newSt.trolleyItems[i].count;
+        if (newSt.trolleyItems[i] !== undefined) {
+          sum += newSt.trolleyItems[i].product.price * newSt.trolleyItems[i].quantity;
+        }
       }
       newSt.trolleySum = sum;
       return newSt;
@@ -72,6 +56,11 @@ const trolleyReducer = (state = initialState, action) => {
         ...state,
         trolleyItems: state.trolleyItems.filter(item => item.id !== action.id),
       };
+    case GET_TROLLEY:
+      return {
+        ...state,
+        trolleyId: action.trolleyId,
+      }
     default:
       return state;
   }

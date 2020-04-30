@@ -21,13 +21,9 @@ export const _retrieveData = async (key) => {
     const value = await AsyncStorage.getItem(`@MySuperStore:${key}`);
     if (value !== null) {
       console.log(`Retrieve data: ${value}`);
-      return value;
     }
+    return value;
   } catch (error) {
     console.log('Error: ', error);
   }
 };
-
-export function authHeader() {
-  return { 'Authorization' : _retrieveData(AUTH_TOKEN_KEY)};
-}

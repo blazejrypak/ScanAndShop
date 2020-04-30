@@ -4,6 +4,7 @@ export const alertConstants = {
   CLEAR: 'CLEAR'
 }
 
+export const GET_TROLLEY = 'GET_TROLLEY';
 export const ADD_TROLLEY_ITEM = 'ADD_TROLLEY_ITEM';
 export const DELETE_TROLLEY_ITEM = 'DELETE_TROLLEY_ITEM';
 export const UPDATE_TROLLEY_ITEM = 'UPDATE_TROLLEY_ITEM';
