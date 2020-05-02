@@ -1,4 +1,3 @@
-import {_retrieveData, _storeData, AUTH_TOKEN_KEY} from "../_helpers/auth_header";
 const axios = require('axios');
 
 const cheerio = require('react-native-cheerio')
@@ -14,44 +13,29 @@ import {
   UPDATE_TROLLEY_ITEM,
   userConstants,
 } from "../constants/action_types";
-import {AsyncStorage} from "react-native";
 import Axios from "axios";
-import {get_product_data} from "../services/tesco_shopping";
 
 let nextTrolleyItemId = 24522;
 let nextShoppingListItemId = 24621;
 
-let DOMAIN = '10.10.10.48'
+let DOMAIN = '10.10.10.48:5000'
 
 export const login = (username, password) => {
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      username: username,
-      password: password,
-    }),
+  const user_json = {
+    "username": username,
+    "password": password
   }
   const user = {username: username, password: password};
   return dispatch => {
     dispatch(request(user));
-    fetch(`http://${DOMAIN}:8080/login`, requestOptions)
+    Axios.post(`http://${DOMAIN}/login`, user_json)
       .then((response) => {
-        if (!response.ok) {
-          dispatch(failure('error wrong username'));
-          dispatch(alertActions.error("error to log in"));
-          return Promise.reject(response);
-        } else {
-          dispatch(success(user, response.headers.get('Authorization')));
-          dispatch(alertActions.success("Logged in"));
-        }
+        dispatch(success(user, response.token));
+        dispatch(alertActions.success("Logged in"));
       })
-      .catch(err => {
-        dispatch(failure('error wrong username'));
-        dispatch(alertActions.error("error to log in"));
+      .catch(error => {
+        dispatch(failure(error.response.msg));
+        dispatch(alertActions.error(error.response.msg));
       });
   }
 
@@ -73,34 +57,21 @@ export function logout() {
 }
 
 export const register = (user) => {
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      username: user.username,
-      password: user.password,
-    }),
+  const user_json = {
+    "username": user.username,
+    "password": user.password
   }
   return dispatch => {
     dispatch(request(user));
-    fetch(`http://${DOMAIN}:8080/users/sign-up`, requestOptions)
+    Axios.post(`http://${DOMAIN}/register`, user_json)
       .then((response) => {
-        if (!response.ok) {
-          dispatch(failure('error'));
-          dispatch(alertActions.error("error to sign up"));
-          return Promise.reject(response);
-        } else {
-          dispatch(success(user));
-          dispatch(alertActions.success('Registration successful'));
-        }
+        dispatch(success(user));
+        dispatch(alertActions.success('Registration successful'));
       })
-      .catch(err => {
-        dispatch(failure('error'));
-        dispatch(alertActions.error("error to sign up"));
-      })
+      .catch(error => {
+        dispatch(failure(error.response.msg));
+        dispatch(alertActions.error(error.response.msg));
+      });
   }
 
   function request(user) {
@@ -125,7 +96,7 @@ export const getTrolley = (jwt) => {
         'Authorization': `${jwt}`
       }
     }
-    Axios.get(`http://${DOMAIN}:8080/shopping_cart`, requestOptions)
+    Axios.get(`http://${DOMAIN}/shopping_cart`, requestOptions)
       .then((response) => {
         dispatch(alertActions.success('Request successful'));
         dispatch(get_trolley(response.data.id));
@@ -163,7 +134,7 @@ export const getTrolleyItems = (trolleyId, jwt) => {
         'Authorization': `${jwt}`
       }
     }
-    Axios.get(`http://${DOMAIN}:8080/cart/${trolleyId}/items`, requestOptions)
+    Axios.get(`http://${DOMAIN}/cart/${trolleyId}/items`, requestOptions)
       .then((response) => {
         dispatch(alertActions.success('Request successful'));
         dispatch(get_trolley_items(dispatch, response.data))
@@ -192,7 +163,6 @@ export const getTrolleyItems = (trolleyId, jwt) => {
 }
 
 export const pushTrolleyItem = (item, trolleyId, jwt) => {
-  console.log('itemeris: ', item);
   let product = {
     "id": item.id,
     "name": item.product.name,
@@ -204,7 +174,7 @@ export const pushTrolleyItem = (item, trolleyId, jwt) => {
       "description": item.product.store.description
     }
   }
-  Axios.post(`http://${DOMAIN}:8080/stores/1/products`, product, getAuthHeaders(jwt))
+  Axios.post(`http://${DOMAIN}/stores/1/products`, product, getAuthHeaders(jwt))
     .then((response) => {
       console.log(response.data);
       dispatch(alertActions.success('Request successful'));
@@ -218,7 +188,7 @@ export const pushTrolleyItem = (item, trolleyId, jwt) => {
 
   function pushItemToCart(item) {
     console.log(item);
-    Axios.post(`http://${DOMAIN}:8080/cart/${trolleyId}/items`, item, getAuthHeaders(jwt))
+    Axios.post(`http://${DOMAIN}/cart/${trolleyId}/items`, item, getAuthHeaders(jwt))
       .then((response) => {
         console.log(response.data);
         dispatch(alertActions.success('Request successful'));
