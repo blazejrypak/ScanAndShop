@@ -5,6 +5,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import {createMaterialBottomTabNavigator} from "@react-navigation/material-bottom-tabs";
 import {useState} from "react";
 import {register} from "../actions";
+import {strings} from "../locales/i18n";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -20,7 +21,7 @@ function SignUpScreen({ auth, dispatch, navigation }) {
        <View style={styles.inputView} >
          <TextInput
            style={styles.inputText}
-           placeholder="Username..."
+           placeholder={strings('auth.username' )}
            placeholderTextColor="#003f5c"
            value={username}
            onChangeText={(text) => setInputs(inputs => ({ ...inputs, username: text}))}
@@ -29,7 +30,7 @@ function SignUpScreen({ auth, dispatch, navigation }) {
        <View style={styles.inputView}>
          <TextInput
            style={styles.inputText}
-           placeholder="Email..."
+           placeholder={"Email..."}
            placeholderTextColor="#003f5c"
            keyboardType={"email-address"}
            value={email}
@@ -39,7 +40,7 @@ function SignUpScreen({ auth, dispatch, navigation }) {
        <View style={styles.inputView}>
          <TextInput
            style={styles.inputText}
-           placeholder="Password..."
+           placeholder={strings('auth.password' )}
            placeholderTextColor="#003f5c"
            secureTextEntry={true}
            value={password}

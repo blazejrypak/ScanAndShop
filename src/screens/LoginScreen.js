@@ -6,6 +6,7 @@ import {createMaterialBottomTabNavigator} from "@react-navigation/material-botto
 import {useState} from "react";
 import {set} from "react-native-reanimated";
 import {login} from "../actions/index"
+import {strings} from "../locales/i18n";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -20,7 +21,7 @@ function LoginScreen({ auth, dispatch, navigation }) {
        <View style={styles.inputView} >
          <TextInput
            style={styles.inputText}
-           placeholder="Username..."
+           placeholder={strings('auth.username' )}
            placeholderTextColor="#003f5c"
            autoCompleteType={"username"}
            value={username}
@@ -30,7 +31,7 @@ function LoginScreen({ auth, dispatch, navigation }) {
        <View style={styles.inputView}>
          <TextInput
            style={styles.inputText}
-           placeholder="Password..."
+           placeholder={strings('auth.password' )}
            placeholderTextColor="#003f5c"
            secureTextEntry={true}
            value={password}
@@ -39,18 +40,14 @@ function LoginScreen({ auth, dispatch, navigation }) {
        </View>
        <TouchableOpacity style={styles.loginBtn} onPress={() => dispatch(login(username, password))}>
          {auth.loggedIn && <ActivityIndicator size="large" color="#0000ff" />}
-         <Text
-           style={styles.loginText}
-         >LOGIN</Text>
+         <Text style={styles.loginText}>{strings('auth.login' )}</Text>
        </TouchableOpacity>
        <TouchableOpacity>
-         <Text style={styles.forgot}>Forgot Password?</Text>
+         <Text style={styles.forgot}>{strings('auth.forgot_password' )}</Text>
        </TouchableOpacity>
        <TouchableOpacity>
-         <Text
-           style={styles.loginText}
-           onPress={() => navigation.navigate('SignUp')}
-         >Signup</Text>
+         <Text style={styles.loginText}
+               onPress={() => navigation.navigate('SignUp')}>{strings('auth.sign_up' )}</Text>
        </TouchableOpacity>
     </View>
   );

@@ -3,20 +3,23 @@ import {Alert, FlatList, StyleSheet, Text, View} from "react-native";
 import {Icon, ListItem} from "react-native-elements";
 import Counter from "../components/Counter";
 import * as React from "react";
+import {strings} from "../locales/i18n";
 
 function TrolleyScreen({ trolley, jwt, dispatch, navigation }) {
-  const updateIt = (id, number) => dispatch(updateTrolleyItem(id, number));
+  const updateIt = (id, number) => {
+    dispatch(updateTrolleyItem(id, number));
+  }
 
   function onChange(number, type, id) {
     console.log("[LIST COUNTER] number: ", number, " type: ", type, " id:", id); // 1, + or -
     const result = trolley.trolleyItems.filter(item => item.id === id);
     if (!number) {
       Alert.alert(
-        'Delete this item?',
+        strings('delete_this_item' ),
         result[0].name,
         [
-          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-          {text: 'OK', onPress: () => dispatch(deleteTrolleyListItem(id))},
+          {text: strings('cancel' ), onPress: () => updateIt(id, 1), style: 'cancel'},
+          {text: strings('approve' ), onPress: () => dispatch(deleteTrolleyListItem(id))},
         ],
       );
     } else {
@@ -51,11 +54,11 @@ function TrolleyScreen({ trolley, jwt, dispatch, navigation }) {
       </View>
       <View style={{flex: 2,  backgroundColor: 'steelblue', flexDirection: 'row', justifyContent: 'space-between'}}>
         <View style={styles.infoContainer}>
-          <Text style={{ fontSize: 20 }}>Budget</Text>
+          <Text style={{ fontSize: 20 }}>{strings('trolley.budget' )}</Text>
           <Text style={{ fontSize: 40, fontWeight: "bold" }}>20 €</Text>
         </View>
         <View style={styles.infoContainer}>
-          <Text style={{ fontSize: 20 }}>Sum</Text>
+          <Text style={{ fontSize: 20 }}>{strings('trolley.sum' )}</Text>
           <Text style={{ fontSize: 40, fontWeight: "bold" }}>{trolley.trolleySum} €</Text>
         </View>
 

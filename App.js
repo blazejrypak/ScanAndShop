@@ -15,7 +15,7 @@ import PayScreen from "./src/screens/PayScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import {authentication} from "./src/reducers/authReducer";
-
+import {strings} from "./src/locales/i18n";
 
 // Connect the screens to Redux
 let HomeContainer = connect(state => ({auth: state.authentication}))(HomeScreen);
@@ -34,10 +34,10 @@ let ScannerContainer = connect(state => ({trolley: state.trolley, jwt: state.aut
 function ShoppingContainer() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="ShoppingList" component={ShoppingListContainer}/>
-      <Tab.Screen name="Scan" component={ScannerContainer}/>
+      <Tab.Screen name={strings('ShoppingContainer.shopping_list' )} component={ShoppingListContainer}/>
+      <Tab.Screen name={strings('ShoppingContainer.scan' )} component={ScannerContainer}/>
       <Tab.Screen
-        name="Trolley"
+        name={strings('ShoppingContainer.shopping_cart' )}
         component={TrolleyContainer}
       />
     </Tab.Navigator>

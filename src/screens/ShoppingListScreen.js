@@ -5,6 +5,7 @@ import Counter from "../components/Counter";
 import {updateShoppingListItem, changeInputItemName, addShoppingListItem, deleteShoppingListItem} from "../actions";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {DEFAUL_COUNT} from "../constants/constants";
+import {strings} from "../locales/i18n";
 
 function ShoppingListScreen({ shoppingList, dispatch, navigation }) {
   const updateIt = (id, number) => dispatch(updateShoppingListItem(id, number));
@@ -14,11 +15,11 @@ function ShoppingListScreen({ shoppingList, dispatch, navigation }) {
     const result = shoppingList.shoppingList.filter(item => item.id === id);
     if (!number) {
       Alert.alert(
-        'Delete this item?',
+        strings('delete_this_item' ),
         result[0].name,
         [
-          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-          {text: 'OK', onPress: () => dispatch(deleteShoppingListItem(id))},
+          {text: strings('cancel' ), onPress: () => updateIt(id, 1), style: 'cancel'},
+          {text: strings('approve' ), onPress: () => dispatch(deleteShoppingListItem(id))},
         ],
       );
     } else {
@@ -37,15 +38,17 @@ function ShoppingListScreen({ shoppingList, dispatch, navigation }) {
   );
 
    function addListItem() {
-    dispatch(addShoppingListItem(shoppingList.inputItemName, DEFAUL_COUNT));
-    dispatch(changeInputItemName(''));
+     if (shoppingList.inputItemName !== ''){
+       dispatch(addShoppingListItem(shoppingList.inputItemName, DEFAUL_COUNT));
+       dispatch(changeInputItemName(''));
+     }
    }
   return (
     <View style={styles.container}>
       <View style={styles.addItem}>
         <Input
           style={{ flex: 1 }}
-          placeholder="Enter item"
+          placeholder={strings('enter_item' )}
           value={shoppingList.inputItemName}
           onChangeText={(text => dispatch(changeInputItemName(text)))}
           rightIcon={<Icon type='entypo' name='add-to-list' size={30} onPress={() => addListItem()}/>}
