@@ -1,5 +1,7 @@
 import {_retrieveData, _storeData, AUTH_TOKEN_KEY} from "../_helpers/auth_header";
 const axios = require('axios');
+
+const cheerio = require('react-native-cheerio')
 import {
   ADD_SHOPPING_LIST_ITEM,
   ADD_TROLLEY_ITEM,
@@ -245,25 +247,24 @@ export const addTrolleyItem = (name, price, count, barcode, trolleyId, jwt) => {
     }
   }
   return dispatch => {
-    get_product_data(barcode)
-      .then(
-        product_data => {
-          dispatch(alertActions.success("successfully added"));
-          if (product_data.products[0] !== undefined) {
-            item.product.name = product_data.products[0].description;
-            item.product.price = 10;
-            item.quantity = product_data.products[0].qtyContents.quantity;
-          }
-          dispatch(add_product(item));
-          dispatch(pushTrolleyItem(item, trolleyId, jwt));
-        },
-        error => {
-          dispatch(add_product(item))
-          dispatch(alertActions.error(error.toString()));
+    Axios.get(`http://www.nasepotraviny.info/${barcode}/`)
+      .then((response) => {
+        const $ = cheerio.load(response.data)
+        let product_name = $('html body div#obsah form.formSearch div.obsah.detail h2').text();
+        if (typeof product_name === "string") {
+          item.product.name = product_name;
+          item.product.price = 10;
+          item.quantity = 1;
         }
-      );
-  };
-
+      })
+      .catch(error => {
+        console.log(error);
+      })
+      .then(() => {
+        dispatch(add_product(item));
+        dispatch(pushTrolleyItem(item, trolleyId, jwt));
+      })
+  }
   function add_product(item) {
     return {
       type: ADD_TROLLEY_ITEM,
