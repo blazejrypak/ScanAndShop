@@ -1,0 +1,27 @@
+{
+  "home": {
+    "welcome": "Vitajte {{name}} v našej aplikácii!"
+  },
+  "trolley": {
+    "budget": "Badžet",
+    "sum": "Spolu"
+  },
+  "ShoppingContainer": {
+    "shopping_list": "Nákupný Lístok",
+    "scan": "Skenovanie",
+    "shopping_cart": "Košík"
+  },
+  "auth": {
+    "login": "Prihlásiť sa",
+    "sign_up": "Registrovať sa",
+    "logout": "Odhlásiť sa",
+    "username": "Použivateľské meno...",
+    "password": "Heslo...",
+    "forgot_password": "Zabudli ste heslo?"
+  },
+  "delete_this_item": "Chcete vymazať položku?",
+  "cancel": "Zrušiť",
+  "reject": "Odmietnuť",
+  "approve": "Potvrdiť",
+  "enter_item": "Zadajte položku"
+}

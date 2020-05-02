@@ -1,0 +1,27 @@
+{
+  "home": {
+    "welcome": "Welcome {{name}} to our app!"
+  },
+  "trolley": {
+    "budget": "Budget",
+    "sum": "Sum"
+  },
+  "ShoppingContainer": {
+    "shopping_list": "Shopping List",
+    "scan": "Scan",
+    "shopping_cart": "Cart"
+  },
+  "auth": {
+    "login": "Login",
+    "sign_up": "Sign Up",
+    "logout": "Logout",
+    "username": "Username...",
+    "password": "Password...",
+    "forgot_password": "Forgot Password?"
+  },
+  "delete_this_item": "Delete this item?",
+  "cancel": "Cancel",
+  "reject": "Reject",
+  "approve": "Approve",
+  "enter_item": "Enter item"
+}
