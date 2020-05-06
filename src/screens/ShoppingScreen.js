@@ -55,18 +55,21 @@ class BottomTab extends Component {
 
 
 function ShoppingScreen({trolley, jwt, dispatch, navigation}) {
+  if (trolley.trolleyId === null){
+    dispatch(getTrolley(jwt)); // get new trolley
+  }
 
   function onChange(number, type, id) {
     console.log("[LIST COUNTER] number: ", number, " type: ", type, " id:", id); // 1, + or -
     dispatch(updateTrolleyItem(id, number));
   }
 
-  const tableHead = ['Price', 'Sale', 'Sum'];
-  let rowData = (price, sale, quantity) => {
+  const tableHead = ['Price', 'discount', 'Sum'];
+  let rowData = (price, discount, sum) => {
     return [
       <Text style={{alignSelf: 'center', fontWeight: 'bold', fontSize: 20}}>{price}</Text>,
-      <Text style={{alignSelf: 'center', fontWeight: 'bold', fontSize: 20, color: 'red'}}>{sale}</Text>,
-      <Text style={{alignSelf: 'center', fontWeight: 'bold', fontSize: 20}}>{quantity}</Text>
+      <Text style={{alignSelf: 'center', fontWeight: 'bold', fontSize: 20, color: 'red'}}>{discount}</Text>,
+      <Text style={{alignSelf: 'center', fontWeight: 'bold', fontSize: 20}}>{sum}</Text>
     ];
   }
   const getItem = () => {
@@ -84,7 +87,7 @@ function ShoppingScreen({trolley, jwt, dispatch, navigation}) {
   const item = getItem();
 
   const getSum = () => {
-    return item.quantity * (item.price - item.sale);
+    return (item.quantity * (item.price - item.discount)).toFixed(2);
   }
 
   return (
@@ -103,7 +106,7 @@ function ShoppingScreen({trolley, jwt, dispatch, navigation}) {
           <Table borderStyle={{borderColor: 'black'}}>
             <Row data={tableHead} flexArr={[1, 1, 2]} style={styles.head} textStyle={styles.text}/>
             <TableWrapper style={styles.wrapper}>
-              <Row data={rowData(item.price, item.sale, getSum())} flexArr={[1, 1, 2]}/>
+              <Row data={rowData(item.price, item.discount, getSum())} flexArr={[1, 1, 2]}/>
             </TableWrapper>
           </Table>
         </Card>

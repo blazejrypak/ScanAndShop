@@ -6,23 +6,7 @@ import {
 } from "../constants/action_types";
 
 const initialState = {
-  shoppingList: [
-    {
-      id: 1,
-      name: "Mrkva",
-      count: 3,
-    },
-    {
-      id: 2,
-      name: "Jablko",
-      count: 1,
-    },
-    {
-      id: 3,
-      name: "Hraskok",
-      count: 5,
-    }
-  ],
+  shoppingList: [],
   inputItemName: '',
 };
 

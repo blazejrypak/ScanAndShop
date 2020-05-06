@@ -5,48 +5,12 @@ import {
   DELETE_TROLLEY_ITEM, DELETE_SHOPPING_LIST_ITEM, GET_TROLLEY_ITEM_DETAILS
 } from "../constants/action_types";
 
-// const initialState = {
-//   trolleyId: null,
-//   trolleyItems: [],
-//   trolleySum: 0
-// };
-
 const initialState = {
   trolleyId: null,
-  trolleyItems: [
-    {
-      "id": 1,
-      "name": "apple",
-      "price": 2.5,
-      "sale": 0.5,
-      "quantity": 12
-    },
-    {
-      "id": 2,
-      "name": 'orange',
-      "price": 2.5,
-      "sale": 0.5,
-      "quantity": 12
-    },
-    {
-      "id": 3,
-      "name": 'banana banana banana banana',
-      "price": 2.5,
-      "sale": 0.5,
-      "quantity": 12
-    }
-  ],
+  trolleyItems: [],
   trolleySum: 0,
-  itemDetails_id: 3,
+  itemDetails_id: 0,
 }
-const sendList = {
-  "products": [{
-    "id": 1,
-    "quantity": 3
-  }],
-  "total_sum": 10
-}
-
 
 function sum(prev, next){
   return prev + next;
@@ -69,10 +33,10 @@ const trolleyReducer = (state = initialState, action) => {
       let newSum = 0;
       for (let i = 0; i < newState.trolleyItems.length; i++) {
         if (newState.trolleyItems[i] !== undefined) {
-          newSum += (newState.trolleyItems[i].price - newState.trolleyItems[i].sale) * newState.trolleyItems[i].quantity;
+          newSum += (newState.trolleyItems[i].price - newState.trolleyItems[i].discount) * newState.trolleyItems[i].quantity;
         }
       }
-      newState.trolleySum = newSum;
+      newState.trolleySum = newSum.toFixed(2);
       return newState;
     case UPDATE_TROLLEY_ITEM:
       let newSt = {
@@ -82,10 +46,10 @@ const trolleyReducer = (state = initialState, action) => {
       let sum = 0;
       for (let i = 0; i < newSt.trolleyItems.length; i++) {
         if (newSt.trolleyItems[i] !== undefined) {
-          sum += (newSt.trolleyItems[i].price - newSt.trolleyItems[i].sale) * newSt.trolleyItems[i].quantity;
+          sum += (newSt.trolleyItems[i].price - newSt.trolleyItems[i].discount) * newSt.trolleyItems[i].quantity;
         }
       }
-      newSt.trolleySum = sum;
+      newSt.trolleySum = sum.toFixed(2);
       return newSt;
     case DELETE_TROLLEY_ITEM:
       return  {

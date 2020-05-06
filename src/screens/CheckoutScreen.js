@@ -52,8 +52,8 @@ class BottomTab extends Component {
   }
 }
 
-const getSum = (quantity, price, sale) => {
-  return quantity * (price - sale);
+const getSum = (quantity, price, discount) => {
+  return (quantity * (price - discount)).toFixed(2);
 }
 
 function CheckoutScreen({trolley, jwt, dispatch, navigation}) {
@@ -70,7 +70,7 @@ function CheckoutScreen({trolley, jwt, dispatch, navigation}) {
             title={item.name}
             titleStyle={{fontSize: 27}}
             rightElement={() => (
-              <View><Text>{getSum(item.quantity, item.price, item.sale)}</Text></View>)}
+              <View><Text>{getSum(item.quantity, item.price, item.discount)}</Text></View>)}
           />
         </Card>
       </TouchableOpacity>
@@ -94,6 +94,7 @@ function CheckoutScreen({trolley, jwt, dispatch, navigation}) {
           buttonStyle={{ backgroundColor: 'green' }}
           titleStyle={{ fontWeight: 'bold' }}
           onPress={() => navigation.navigate('PayScreen')}
+          disabled={trolley.trolleyItems.length === 0}
         />
       </View>
     </View>

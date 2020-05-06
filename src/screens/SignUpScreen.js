@@ -6,6 +6,7 @@ import {createMaterialBottomTabNavigator} from "@react-navigation/material-botto
 import {useState} from "react";
 import {register} from "../actions";
 import {strings} from "../locales/i18n";
+import {CheckBox} from "react-native-elements";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -13,9 +14,10 @@ function SignUpScreen({ auth, dispatch, navigation }) {
   const [inputs, setInputs] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
+    subscription: false
   })
-  const {username, email, password} = inputs;
+  const {username, email, password, subscription} = inputs;
   return (
      <View style={styles.container}>
        <View style={styles.inputView} >
@@ -47,7 +49,7 @@ function SignUpScreen({ auth, dispatch, navigation }) {
            onChangeText={(text) => setInputs(inputs => ({ ...inputs, password: text}))}
          />
        </View>
-       <TouchableOpacity style={styles.loginBtn} onPress={() => dispatch(register({username: username, email: email, password: password}))}>
+       <TouchableOpacity style={styles.loginBtn} onPress={() => dispatch(register({username: username, email: email, password: password, subscription: subscription}))}>
          {auth.registering && <ActivityIndicator size="large" color="#0000ff" />}
          <Text style={styles.loginText}>Sign Up</Text>
        </TouchableOpacity>
@@ -57,6 +59,12 @@ function SignUpScreen({ auth, dispatch, navigation }) {
            onPress={() => navigation.navigate('Login')}
          >Login</Text>
        </TouchableOpacity>
+       <CheckBox
+         center
+         title='Subscribe to our newsletter'
+         checked={subscription}
+         onPress={() => setInputs(inputs => ({ ...inputs, subscription: !subscription}))}
+       />
     </View>
   );
 }
@@ -106,5 +114,15 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     marginTop:40,
     marginBottom:10
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    marginBottom: 20,
+  },
+  checkbox: {
+    alignSelf: "center",
+  },
+  label: {
+    margin: 8,
   },
 });

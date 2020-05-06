@@ -9,7 +9,7 @@ function ScannerScreen({ trolley, jwt, dispatch, navigation }) {
   function onBarCodeScanned(type, data) {
     console.log("[BAR CODE SCANNED] type: ", type, " data: ", data);
     dispatch(addTrolleyItem(data.toString(), DEFAUL_PRICE, DEFAUL_COUNT, data.toString(), trolley.trolleyId, jwt));
-    navigation.navigate(strings('ShoppingContainer.shopping_cart' ));
+    navigation.navigate('Shopping');
   }
 
   return (

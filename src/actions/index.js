@@ -30,7 +30,7 @@ export const login = (username, password) => {
     dispatch(request(user));
     Axios.post(`http://${DOMAIN}/login`, user_json)
       .then((response) => {
-        dispatch(success(user, response.token));
+        dispatch(success(user, response.data[0].token));
         dispatch(alertActions.success("Logged in"));
       })
       .catch(error => {
@@ -59,11 +59,13 @@ export function logout() {
 export const register = (user) => {
   const user_json = {
     "username": user.username,
-    "password": user.password
+    "email": user.email,
+    "password": user.password,
+    "subs": user.subscription
   }
   return dispatch => {
     dispatch(request(user));
-    Axios.post(`http://${DOMAIN}/register`, user_json)
+    Axios.post(`http://${DOMAIN}/user/register`, user_json)
       .then((response) => {
         dispatch(success(user));
         dispatch(alertActions.success('Registration successful'));
@@ -96,11 +98,10 @@ export const getTrolley = (jwt) => {
         'Authorization': `${jwt}`
       }
     }
-    Axios.get(`http://${DOMAIN}/shopping_cart`, requestOptions)
+    Axios.get(`http://${DOMAIN}/shopping/cart`, requestOptions)
       .then((response) => {
         dispatch(alertActions.success('Request successful'));
         dispatch(get_trolley(response.data.id));
-        dispatch(getTrolleyItems(response.data.id, jwt));
       })
       .catch(err => {
         console.log(err);
@@ -200,39 +201,28 @@ export const pushTrolleyItem = (item, trolleyId, jwt) => {
 }
 
 export const addTrolleyItem = (name, price, count, barcode, trolleyId, jwt) => {
-  nextTrolleyItemId += 1;
-  let item = {
-    "id": nextTrolleyItemId,
-    "quantity": count,
-    "product": {
-      "description": null,
-      "id": 1,
-      "name": `Item ${nextTrolleyItemId}`,
-      "price": price,
-      "store": {
-        "description": "Vtipalek store",
-        "id": 1,
-        "name": "Bubo",
-      },
-    }
+  const requestOptions = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `${jwt}`
+    },
   }
+  const data = {
+    "code": `${barcode}`
+  }
+  console.log(barcode);
   return dispatch => {
-    Axios.get(`http://www.nasepotraviny.info/${barcode}/`)
+    Axios.post(`http://${DOMAIN}/warehouse/item`, data, requestOptions)
       .then((response) => {
-        const $ = cheerio.load(response.data)
-        let product_name = $('html body div#obsah form.formSearch div.obsah.detail h2').text();
-        if (typeof product_name === "string") {
-          item.product.name = product_name;
-          item.product.price = 10;
-          item.quantity = 1;
-        }
+        dispatch(alertActions.success('Request successful'));
+        let product = response.data;
+        product["quantity"] = 1;
+        dispatch(add_product(product));
       })
-      .catch(error => {
-        console.log(error);
-      })
-      .then(() => {
-        dispatch(add_product(item));
-        dispatch(pushTrolleyItem(item, trolleyId, jwt));
+      .catch(err => {
+        console.log(err);
+        dispatch(alertActions.error("error to get item" + err));
       })
   }
   function add_product(item) {
