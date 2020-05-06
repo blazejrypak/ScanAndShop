@@ -1,6 +1,6 @@
 import {deleteTrolleyListItem, getTrolley, getTrolleyItems, updateTrolleyItem} from "../actions";
 import {Alert, FlatList, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
-import {Card, Divider, Icon, ListItem} from "react-native-elements";
+import {Button, Card, Divider, Icon, ListItem} from "react-native-elements";
 import Counter from "../components/Counter";
 import * as React from "react";
 import {strings} from "../locales/i18n";
@@ -36,19 +36,15 @@ class BottomTab extends Component {
           height: 150
         }}
         >
-            <View style={{flexDirection: 'column', alignItems: 'center' }}>
-              <Text style={{fontSize: 15}}>{strings('trolley.budget')}</Text>
-              <Text style={{fontSize: 15, fontWeight: "bold"}}>20 €</Text>
-              <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Checkout')}>
-                <Icon raised type='MaterialIcons' name='shopping-cart' size={25} color='green'/>
-              </TouchableWithoutFeedback>
-            </View>
+          <View style={{flexDirection: 'column', alignItems: 'center' }}>
+            <Text style={{fontSize: 15}}>{strings('trolley.budget')}</Text>
+            <Text style={{fontSize: 15, fontWeight: "bold"}}>20 €</Text>
+            <Icon raised type='MaterialIcons' name='shopping-cart' size={25} color='green'/>
+          </View>
           <View style={{flexDirection: 'column', alignItems: 'center' }}>
             <Text style={{fontSize: 15}}>{strings('trolley.sum')}</Text>
             <Text style={{fontSize: 15, fontWeight: "bold"}}>10 €</Text>
-            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('ScannerScreen')}>
-              <Icon raised type='MaterialIcons' name='delete' size={25} color='green'/>
-            </TouchableWithoutFeedback>
+            <Icon raised type='MaterialIcons' name='delete' size={25} color='green'/>
           </View>
         </View>
       </View>
@@ -57,38 +53,8 @@ class BottomTab extends Component {
 }
 
 
-function TrolleyScreen({trolley, jwt, dispatch, navigation}) {
-  const updateIt = (id, number) => {
-    dispatch(updateTrolleyItem(id, number));
-  }
-
-  function onChange(number, type, id) {
-    console.log("[LIST COUNTER] number: ", number, " type: ", type, " id:", id); // 1, + or -
-    const result = trolley.trolleyItems.filter(item => item.id === id);
-    if (!number) {
-      Alert.alert(
-        strings('delete_this_item'),
-        result[0].name,
-        [
-          {text: strings('cancel'), onPress: () => updateIt(id, 1), style: 'cancel'},
-          {text: strings('approve'), onPress: () => dispatch(deleteTrolleyListItem(id))},
-        ],
-      );
-    } else {
-      updateIt(id, number);
-    }
-  }
-
+function CheckoutScreen({trolley, jwt, dispatch, navigation}) {
   const keyExtractor = (item, index) => index.toString()
-
-  const tableHead = ['Price', 'Sale', 'Sum'];
-  let rowData = (price, sale, quantity) => {
-    return [
-      <Text style={{alignSelf: 'center', fontWeight: 'bold', fontSize: 20}}>{price}</Text>,
-      <Text style={{alignSelf: 'center', fontWeight: 'bold', fontSize: 20, color: 'red'}}>{sale}</Text>,
-      <Text style={{alignSelf: 'center', fontWeight: 'bold', fontSize: 20}}>{quantity}</Text>
-    ];
-  }
 
   const renderItem = ({item}) => (
     <View>
@@ -96,23 +62,13 @@ function TrolleyScreen({trolley, jwt, dispatch, navigation}) {
         <ListItem
           title={item.name}
           titleStyle={{fontSize: 27}}
-          bottomDivider
           rightElement={() => (
-            <View><Counter start={item.quantity} min={0} max={50} id={1} onChange={onChange.bind(this)}/></View>)}
+            <View><Text>{item.price}</Text></View>)}
         />
-        <Table borderStyle={{borderColor: 'black'}}>
-          <Row data={tableHead} flexArr={[1, 1, 2]} style={styles.head} textStyle={styles.text}/>
-          <TableWrapper style={styles.wrapper}>
-            <Row data={rowData(item.price, item.sale, item.quantity)} flexArr={[1, 1, 2]}/>
-          </TableWrapper>
-        </Table>
       </Card>
     </View>
   );
 
-  if (trolley.trolleyId === null) {
-    dispatch(getTrolley(jwt));
-  }
   const testTrolleyItems = [
     {
       "name": "hello",
@@ -152,7 +108,17 @@ function TrolleyScreen({trolley, jwt, dispatch, navigation}) {
           renderItem={renderItem}
         />
       </View>
-      <BottomTab navigation={navigation}/>
+      <View style={{
+        flex: 1,
+        justifyContent: 'flex-end',
+      }}>
+        <Button
+          title="Checkout"
+          buttonStyle={{ backgroundColor: 'green' }}
+          titleStyle={{ fontWeight: 'bold' }}
+          onPress={() => navigation.navigate('PayScreen')}
+        />
+      </View>
     </View>
   );
 }
@@ -185,4 +151,4 @@ const styles = StyleSheet.create({
   row: {height: 'auto'},
   text: {textAlign: 'center', color: 'white', fontWeight: 'bold'}
 });
-export default TrolleyScreen;
+export default CheckoutScreen;

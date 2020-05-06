@@ -15,6 +15,11 @@ function HomeScreen({auth, dispatch, navigation}) {
         <TouchableOpacity style={styles.logoutBtn} onPress={() => dispatch(logout())}>
           <Text style={styles.logoutText}>{strings('auth.logout' )}</Text>
         </TouchableOpacity>
+        }
+        {auth.loggedIn &&
+        <TouchableOpacity style={styles.logoutBtn} onPress={() => navigation.navigate('UserProfile')}>
+          <Text style={styles.logoutText}>Profile</Text>
+        </TouchableOpacity>
 
         }
         <TouchableOpacity

@@ -16,9 +16,12 @@ import LoginScreen from "./src/screens/LoginScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import {authentication} from "./src/reducers/authReducer";
 import {strings} from "./src/locales/i18n";
+import CheckoutScreen from "./src/screens/CheckoutScreen";
+import UserProfileScreen from "./src/screens/UserProfileScreen";
 
 // Connect the screens to Redux
 let HomeContainer = connect(state => ({auth: state.authentication}))(HomeScreen);
+let UserProfileContainer = connect(state => ({user: state.authentication}))(UserProfileScreen);
 let LoginContainer = connect(state => ({auth: state.authentication}))(LoginScreen);
 let SignUpContainer = connect(state => ({auth: state.registration}))(SignUpScreen);
 // Create our stack navigator
@@ -27,6 +30,7 @@ let RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 let TrolleyContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(TrolleyScreen);
+let CheckoutContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(CheckoutScreen);
 let ShoppingListContainer = connect(state => ({shoppingList: state.shoppingList, jwt: state.authentication.jwt}))(ShoppingListScreen);
 let PayContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(PayScreen);
 let ScannerContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(ScannerScreen);
@@ -50,10 +54,14 @@ function InitComponent ({auth, dispatch, navigation}) {
         {auth.loggedIn ? (
           <>
             <RootStack.Screen name="Home" component={HomeContainer}/>
-            <RootStack.Screen
-              name="Shopping"
-              component={ShoppingContainer}
-            />
+            <RootStack.Screen name="Shopping" component={TrolleyContainer}/>
+            <RootStack.Screen name="ScannerScreen" component={ScannerContainer}/>
+            <RootStack.Screen name="Checkout" component={CheckoutContainer}/>
+            <RootStack.Screen name="UserProfile" component={UserProfileContainer}/>
+            {/*<RootStack.Screen*/}
+            {/*  name="Shopping"*/}
+            {/*  component={ShoppingContainer}*/}
+            {/*/>*/}
             <RootStack.Screen
               name="PayScreen"
               component={PayContainer}
