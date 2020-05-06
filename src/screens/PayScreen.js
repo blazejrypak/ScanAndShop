@@ -10,9 +10,10 @@ const Tab = createMaterialBottomTabNavigator();
 function PayScreen({ trolley, dispatch, navigation }) {
   return (
      <View style={styles.container}>
+       <Text style={{ fontSize: 20, textAlign:'center', paddingBottom: 30, color: 'green' }}>Show the QR code below to cashier</Text>
        <QRCode
          value={JSON.stringify(trolley)}
-         color={'#000000'}
+         color={'black'}
          backgroundColor={'white'}
          size={300}
          logoMargin={2}

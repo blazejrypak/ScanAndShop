@@ -8,7 +8,7 @@ import store from "./src/store";
 import HomeScreen from "./src/screens/HomeScreen";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ScannerScreen from "./src/screens/ScannerScreen";
-import TrolleyScreen from "./src/screens/TrolleyScreen";
+import ShoppingScreen from "./src/screens/ShoppingScreen";
 import ShoppingListScreen from "./src/screens/ShoppingListScreen";
 import {Button} from "react-native-elements";
 import PayScreen from "./src/screens/PayScreen";
@@ -29,24 +29,12 @@ let RootStack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
-let TrolleyContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(TrolleyScreen);
+let TrolleyContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(ShoppingScreen);
 let CheckoutContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(CheckoutScreen);
 let ShoppingListContainer = connect(state => ({shoppingList: state.shoppingList, jwt: state.authentication.jwt}))(ShoppingListScreen);
 let PayContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(PayScreen);
 let ScannerContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(ScannerScreen);
 
-function ShoppingContainer() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name={strings('ShoppingContainer.shopping_list' )} component={ShoppingListContainer}/>
-      <Tab.Screen name={strings('ShoppingContainer.scan' )} component={ScannerContainer}/>
-      <Tab.Screen
-        name={strings('ShoppingContainer.shopping_cart' )}
-        component={TrolleyContainer}
-      />
-    </Tab.Navigator>
-  );
-}
 function InitComponent ({auth, dispatch, navigation}) {
   return (
     <NavigationContainer>
@@ -58,10 +46,6 @@ function InitComponent ({auth, dispatch, navigation}) {
             <RootStack.Screen name="ScannerScreen" component={ScannerContainer}/>
             <RootStack.Screen name="Checkout" component={CheckoutContainer}/>
             <RootStack.Screen name="UserProfile" component={UserProfileContainer}/>
-            {/*<RootStack.Screen*/}
-            {/*  name="Shopping"*/}
-            {/*  component={ShoppingContainer}*/}
-            {/*/>*/}
             <RootStack.Screen
               name="PayScreen"
               component={PayContainer}

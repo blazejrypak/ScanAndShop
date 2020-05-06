@@ -2,15 +2,50 @@ import {
   GET_TROLLEY,
   ADD_TROLLEY_ITEM,
   UPDATE_TROLLEY_ITEM,
-  DELETE_TROLLEY_ITEM, DELETE_SHOPPING_LIST_ITEM
+  DELETE_TROLLEY_ITEM, DELETE_SHOPPING_LIST_ITEM, GET_TROLLEY_ITEM_DETAILS
 } from "../constants/action_types";
+
+// const initialState = {
+//   trolleyId: null,
+//   trolleyItems: [],
+//   trolleySum: 0
+// };
 
 const initialState = {
   trolleyId: null,
-  trolleyItems: [],
+  trolleyItems: [
+    {
+      "id": 1,
+      "name": "apple",
+      "price": 2.5,
+      "sale": 0.5,
+      "quantity": 12
+    },
+    {
+      "id": 2,
+      "name": 'orange',
+      "price": 2.5,
+      "sale": 0.5,
+      "quantity": 12
+    },
+    {
+      "id": 3,
+      "name": 'banana banana banana banana',
+      "price": 2.5,
+      "sale": 0.5,
+      "quantity": 12
+    }
+  ],
   trolleySum: 0,
-  trolleyWeight: 0,
-};
+  itemDetails_id: 3,
+}
+const sendList = {
+  "products": [{
+    "id": 1,
+    "quantity": 3
+  }],
+  "total_sum": 10
+}
 
 
 function sum(prev, next){
@@ -28,12 +63,13 @@ const trolleyReducer = (state = initialState, action) => {
     case ADD_TROLLEY_ITEM:
       let newState = {
         ...state,
-        trolleyItems: [...state.trolleyItems, action.item]
+        trolleyItems: [...state.trolleyItems, action.item],
+        itemDetails_id: action.item.id,
       };
       let newSum = 0;
       for (let i = 0; i < newState.trolleyItems.length; i++) {
         if (newState.trolleyItems[i] !== undefined) {
-          newSum += (newState.trolleyItems[i].product.price * newState.trolleyItems[i].quantity);
+          newSum += (newState.trolleyItems[i].price - newState.trolleyItems[i].sale) * newState.trolleyItems[i].quantity;
         }
       }
       newState.trolleySum = newSum;
@@ -46,7 +82,7 @@ const trolleyReducer = (state = initialState, action) => {
       let sum = 0;
       for (let i = 0; i < newSt.trolleyItems.length; i++) {
         if (newSt.trolleyItems[i] !== undefined) {
-          sum += newSt.trolleyItems[i].product.price * newSt.trolleyItems[i].quantity;
+          sum += (newSt.trolleyItems[i].price - newSt.trolleyItems[i].sale) * newSt.trolleyItems[i].quantity;
         }
       }
       newSt.trolleySum = sum;
@@ -60,6 +96,11 @@ const trolleyReducer = (state = initialState, action) => {
       return {
         ...state,
         trolleyId: action.trolleyId,
+      }
+    case GET_TROLLEY_ITEM_DETAILS:
+      return {
+        ...state,
+        itemDetails_id: action.id,
       }
     default:
       return state;

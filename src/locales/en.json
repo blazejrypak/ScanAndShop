@@ -3,8 +3,8 @@
     "welcome": "Welcome {{name}} to our app!"
   },
   "trolley": {
-    "budget": "Budget",
-    "sum": "Sum"
+    "count_trolley_items": "Total",
+    "sum": "Total"
   },
   "ShoppingContainer": {
     "shopping_list": "Shopping List",

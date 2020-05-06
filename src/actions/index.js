@@ -8,7 +8,7 @@ import {
   CHANGE_INPUT_ITEM_NAME,
   DELETE_SHOPPING_LIST_ITEM,
   DELETE_TROLLEY_ITEM,
-  GET_TROLLEY,
+  GET_TROLLEY, GET_TROLLEY_ITEM_DETAILS,
   UPDATE_SHOPPING_LIST_ITEM,
   UPDATE_TROLLEY_ITEM,
   userConstants,
@@ -248,6 +248,13 @@ export function updateTrolleyItem(id, count) {
     type: UPDATE_TROLLEY_ITEM,
     id,
     count
+  }
+}
+
+export function getTrolleyItemDetails(id) {
+  return {
+    type: GET_TROLLEY_ITEM_DETAILS,
+    id
   }
 }
 

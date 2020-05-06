@@ -22,12 +22,6 @@ class BottomTab extends Component {
         flexDirection: 'column',
         backgroundColor: '#ffffff'
       }}>
-        <View style={{position: 'absolute', alignSelf: 'center', bottom: 5}}>
-          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('ScannerScreen')}>
-            <Icon raised reverse type='MaterialIcons' name='filter-center-focus' size={40} color='green'/>
-          </TouchableWithoutFeedback>
-        </View>
-
         <View style={{
           position: 'absolute',
           flexDirection: 'row',
@@ -37,49 +31,35 @@ class BottomTab extends Component {
         }}
         >
             <View style={{flexDirection: 'column', alignItems: 'center' }}>
-              <Text style={{fontSize: 15}}>{strings('trolley.budget')}</Text>
-              <Text style={{fontSize: 15, fontWeight: "bold"}}>20 €</Text>
+              <Text style={{fontSize: 15}}>{strings('trolley.count_trolley_items')}</Text>
+              <Text style={{fontSize: 15, fontWeight: "bold"}}>{this.props.trolley.trolleyItems.length} items</Text>
               <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Checkout')}>
                 <Icon raised type='MaterialIcons' name='shopping-cart' size={25} color='green'/>
               </TouchableWithoutFeedback>
             </View>
           <View style={{flexDirection: 'column', alignItems: 'center' }}>
             <Text style={{fontSize: 15}}>{strings('trolley.sum')}</Text>
-            <Text style={{fontSize: 15, fontWeight: "bold"}}>10 €</Text>
-            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('ScannerScreen')}>
+            <Text style={{fontSize: 15, fontWeight: "bold"}}>{this.props.trolley.trolleySum} €</Text>
+            <TouchableWithoutFeedback onPress={() => this.props.handleRemoveTrolleyItem()}>
               <Icon raised type='MaterialIcons' name='delete' size={25} color='green'/>
             </TouchableWithoutFeedback>
           </View>
         </View>
+        <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', bottom: 5 }} onPress={() => this.props.navigation.navigate('ScannerScreen')}>
+          <Icon raised reverse type='MaterialIcons' name='filter-center-focus' size={40} color='green'/>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
 
-function TrolleyScreen({trolley, jwt, dispatch, navigation}) {
-  const updateIt = (id, number) => {
-    dispatch(updateTrolleyItem(id, number));
-  }
+function ShoppingScreen({trolley, jwt, dispatch, navigation}) {
 
   function onChange(number, type, id) {
     console.log("[LIST COUNTER] number: ", number, " type: ", type, " id:", id); // 1, + or -
-    const result = trolley.trolleyItems.filter(item => item.id === id);
-    if (!number) {
-      Alert.alert(
-        strings('delete_this_item'),
-        result[0].name,
-        [
-          {text: strings('cancel'), onPress: () => updateIt(id, 1), style: 'cancel'},
-          {text: strings('approve'), onPress: () => dispatch(deleteTrolleyListItem(id))},
-        ],
-      );
-    } else {
-      updateIt(id, number);
-    }
+    dispatch(updateTrolleyItem(id, number));
   }
-
-  const keyExtractor = (item, index) => index.toString()
 
   const tableHead = ['Price', 'Sale', 'Sum'];
   let rowData = (price, sale, quantity) => {
@@ -89,70 +69,47 @@ function TrolleyScreen({trolley, jwt, dispatch, navigation}) {
       <Text style={{alignSelf: 'center', fontWeight: 'bold', fontSize: 20}}>{quantity}</Text>
     ];
   }
-
-  const renderItem = ({item}) => (
-    <View>
-      <Card>
-        <ListItem
-          title={item.name}
-          titleStyle={{fontSize: 27}}
-          bottomDivider
-          rightElement={() => (
-            <View><Counter start={item.quantity} min={0} max={50} id={1} onChange={onChange.bind(this)}/></View>)}
-        />
-        <Table borderStyle={{borderColor: 'black'}}>
-          <Row data={tableHead} flexArr={[1, 1, 2]} style={styles.head} textStyle={styles.text}/>
-          <TableWrapper style={styles.wrapper}>
-            <Row data={rowData(item.price, item.sale, item.quantity)} flexArr={[1, 1, 2]}/>
-          </TableWrapper>
-        </Table>
-      </Card>
-    </View>
-  );
-
-  if (trolley.trolleyId === null) {
-    dispatch(getTrolley(jwt));
+  const getItem = () => {
+    for (let i = 0; i < trolley.trolleyItems.length; i++) {
+        if (trolley.trolleyItems[i].id === trolley.itemDetails_id) {
+          return trolley.trolleyItems[i];
+        }
+    }
+    return undefined;
   }
-  const testTrolleyItems = [
-    {
-      "name": "hello",
-      "price": 2.32,
-      "sale": 0.01,
-      "quantity": 1,
-      "sum" : 2.32
-    },
-    {
-      "name": "hello",
-      "price": 2.32,
-      "sale": 0.01,
-      "quantity": 1,
-      "sum" : 2.32
-    },
-    {
-      "name": "hello",
-      "price": 2.32,
-      "sale": 0.01,
-      "quantity": 1,
-      "sum" : 2.32
-    },
-    {
-      "name": "hello",
-      "price": 2.32,
-      "sale": 0.01,
-      "quantity": 1,
-      "sum" : 2.32
-    },
-  ]
+  function handleRemoveTrolleyItem() {
+    dispatch(deleteTrolleyListItem(item.id))
+  }
+
+  const item = getItem();
+
+  const getSum = () => {
+    return item.quantity * (item.price - item.sale);
+  }
+
   return (
     <View style={{flex: 1}}>
       <View style={{flex: 8, backgroundColor: 'white'}}>
-        <FlatList
-          keyExtractor={keyExtractor}
-          data={testTrolleyItems}
-          renderItem={renderItem}
-        />
+        {item !== undefined &&
+        <Card>
+          <ListItem
+            title={item.name}
+            titleStyle={{fontSize: 27}}
+            bottomDivider
+            rightElement={() => (
+              <View><Counter start={item.quantity} min={1} max={50} id={item.id}
+                             onChange={onChange.bind(this)}/></View>)}
+          />
+          <Table borderStyle={{borderColor: 'black'}}>
+            <Row data={tableHead} flexArr={[1, 1, 2]} style={styles.head} textStyle={styles.text}/>
+            <TableWrapper style={styles.wrapper}>
+              <Row data={rowData(item.price, item.sale, getSum())} flexArr={[1, 1, 2]}/>
+            </TableWrapper>
+          </Table>
+        </Card>
+        }
       </View>
-      <BottomTab navigation={navigation}/>
+      <BottomTab navigation={navigation} handleRemoveTrolleyItem={handleRemoveTrolleyItem.bind(this)} trolley={trolley}/>
     </View>
   );
 }
@@ -180,9 +137,10 @@ const styles = StyleSheet.create({
     height: 20,
     backgroundColor: 'green'
   },
-  wrapper: {flex: 1},
+  wrapper: {
+  },
   title: {flex: 1, backgroundColor: '#f6f8fa'},
   row: {height: 'auto'},
   text: {textAlign: 'center', color: 'white', fontWeight: 'bold'}
 });
-export default TrolleyScreen;
+export default ShoppingScreen;

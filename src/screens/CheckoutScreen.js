@@ -1,4 +1,4 @@
-import {deleteTrolleyListItem, getTrolley, getTrolleyItems, updateTrolleyItem} from "../actions";
+import {deleteTrolleyListItem, getTrolley, getTrolleyItemDetails, getTrolleyItems, updateTrolleyItem} from "../actions";
 import {Alert, FlatList, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import {Button, Card, Divider, Icon, ListItem} from "react-native-elements";
 import Counter from "../components/Counter";
@@ -52,59 +52,36 @@ class BottomTab extends Component {
   }
 }
 
+const getSum = (quantity, price, sale) => {
+  return quantity * (price - sale);
+}
 
 function CheckoutScreen({trolley, jwt, dispatch, navigation}) {
   const keyExtractor = (item, index) => index.toString()
 
   const renderItem = ({item}) => (
     <View>
-      <Card>
-        <ListItem
-          title={item.name}
-          titleStyle={{fontSize: 27}}
-          rightElement={() => (
-            <View><Text>{item.price}</Text></View>)}
-        />
-      </Card>
+      <TouchableOpacity onPress={() => {
+        dispatch(getTrolleyItemDetails(item.id));
+        navigation.navigate('Shopping')
+      }}>
+        <Card>
+          <ListItem
+            title={item.name}
+            titleStyle={{fontSize: 27}}
+            rightElement={() => (
+              <View><Text>{getSum(item.quantity, item.price, item.sale)}</Text></View>)}
+          />
+        </Card>
+      </TouchableOpacity>
     </View>
   );
-
-  const testTrolleyItems = [
-    {
-      "name": "hello",
-      "price": 2.32,
-      "sale": 0.01,
-      "quantity": 1,
-      "sum" : 2.32
-    },
-    {
-      "name": "hello",
-      "price": 2.32,
-      "sale": 0.01,
-      "quantity": 1,
-      "sum" : 2.32
-    },
-    {
-      "name": "hello",
-      "price": 2.32,
-      "sale": 0.01,
-      "quantity": 1,
-      "sum" : 2.32
-    },
-    {
-      "name": "hello",
-      "price": 2.32,
-      "sale": 0.01,
-      "quantity": 1,
-      "sum" : 2.32
-    },
-  ]
   return (
     <View style={{flex: 1}}>
       <View style={{flex: 8, backgroundColor: 'white'}}>
         <FlatList
           keyExtractor={keyExtractor}
-          data={testTrolleyItems}
+          data={trolley.trolleyItems}
           renderItem={renderItem}
         />
       </View>
