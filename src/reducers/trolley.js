@@ -2,7 +2,7 @@ import {
   GET_TROLLEY,
   ADD_TROLLEY_ITEM,
   UPDATE_TROLLEY_ITEM,
-  DELETE_TROLLEY_ITEM, DELETE_SHOPPING_LIST_ITEM, GET_TROLLEY_ITEM_DETAILS
+  DELETE_TROLLEY_ITEM, DELETE_SHOPPING_LIST_ITEM, GET_TROLLEY_ITEM_DETAILS, CHECKOUT
 } from "../constants/action_types";
 
 const initialState = {
@@ -10,13 +10,6 @@ const initialState = {
   trolleyItems: [],
   trolleySum: 0,
   itemDetails_id: 0,
-}
-
-function sum(prev, next){
-  return prev + next;
-}
-function price(item){
-  return item.product.price;
 }
 
 const trolleyReducer = (state = initialState, action) => {
@@ -66,6 +59,8 @@ const trolleyReducer = (state = initialState, action) => {
         ...state,
         itemDetails_id: action.id,
       }
+    case CHECKOUT:
+      return initialState;
     default:
       return state;
   }

@@ -28,7 +28,7 @@ export const authentication = (state=initialState, action) =>  {
         loggedIn: false
       };
     case userConstants.LOGOUT:
-      return {};
+      return initialState;
     default:
       return state
   }

@@ -5,7 +5,7 @@ import {
   ADD_SHOPPING_LIST_ITEM,
   ADD_TROLLEY_ITEM,
   alertConstants,
-  CHANGE_INPUT_ITEM_NAME,
+  CHANGE_INPUT_ITEM_NAME, CHECKOUT,
   DELETE_SHOPPING_LIST_ITEM,
   DELETE_TROLLEY_ITEM,
   GET_TROLLEY, GET_TROLLEY_ITEM_DETAILS,
@@ -189,6 +189,44 @@ export const getTrolleyItems = (trolleyId, jwt) => {
             }
         })
       })
+    }
+  }
+}
+
+export const checkout = (jwt, trolley) => {
+  return dispatch => {
+    const requestOptions = {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `${jwt}`
+      }
+    }
+    const trolleyItems = [];
+    for (let i = 0; i < trolley.trolleyItems.length; i++) {
+      trolleyItems.push({
+        "code": trolley.trolleyItems[i].code,
+        "quantity": trolley.trolleyItems[i].quantity,
+        "price": trolley.trolleyItems[i].price
+      })
+    }
+    const data = {
+      "shopping_cart_id": trolley.trolleyId,
+      "items": trolleyItems
+    }
+    Axios.put(`http://${DOMAIN}/shopping/cart`, data, requestOptions)
+      .then((response) => {
+        dispatch(alertActions.success('Request successful'));
+        dispatch(checkout_order());
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(alertActions.error("error to get trolley" + err));
+      });
+  }
+  function checkout_order() {
+    return {
+      type: CHECKOUT
     }
   }
 }

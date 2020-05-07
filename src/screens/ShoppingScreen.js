@@ -8,7 +8,7 @@ import {Table, Row, Rows, TableWrapper, Col, Cell, Cols} from 'react-native-tabl
 import {Component} from "react";
 import TouchableItem from "@react-navigation/stack/src/views/TouchableItem";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
-
+import PropTypes from 'prop-types';
 
 class BottomTab extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class BottomTab extends Component {
         >
             <View style={{flexDirection: 'column', alignItems: 'center' }}>
               <Text style={{fontSize: 15}}>{strings('trolley.count_trolley_items')}</Text>
-              <Text style={{fontSize: 15, fontWeight: "bold"}}>{this.props.trolley.trolleyItems.length} items</Text>
+              <Text style={{fontSize: 15, fontWeight: "bold"}}>{this.props.trolley.trolleyItems !== undefined ? this.props.trolley.trolleyItems.length : 0} items</Text>
               <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Checkout')}>
                 <Icon raised type='MaterialIcons' name='shopping-cart' size={25} color='green'/>
               </TouchableWithoutFeedback>
@@ -52,6 +52,12 @@ class BottomTab extends Component {
     );
   }
 }
+
+BottomTab.propTypes = {
+  navigation: PropTypes.object,
+  trolley: PropTypes.object,
+  handleRemoveTrolleyItem: PropTypes.func,
+};
 
 
 function ShoppingScreen({trolley, jwt, dispatch, navigation}) {
@@ -73,7 +79,7 @@ function ShoppingScreen({trolley, jwt, dispatch, navigation}) {
     ];
   }
   const getItem = () => {
-    for (let i = 0; i < trolley.trolleyItems.length; i++) {
+    for (let i = 0; trolley.trolleyItems && i < trolley.trolleyItems.length; i++) {
         if (trolley.trolleyItems[i].id === trolley.itemDetails_id) {
           return trolley.trolleyItems[i];
         }
@@ -81,7 +87,9 @@ function ShoppingScreen({trolley, jwt, dispatch, navigation}) {
     return undefined;
   }
   function handleRemoveTrolleyItem() {
-    dispatch(deleteTrolleyListItem(item.id))
+    if (item){
+      dispatch(deleteTrolleyListItem(item.id))
+    }
   }
 
   const item = getItem();

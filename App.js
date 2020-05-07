@@ -70,12 +70,14 @@ function InitComponent ({auth, dispatch, navigation}) {
             <RootStack.Screen name="ScannerScreen" component={ScannerContainer}/>
             <RootStack.Screen name="Checkout" component={CheckoutContainer} options={{
               headerRight: () => (
-                <Menu>
-                  <MenuTrigger text='edit' />
-                  <MenuOptions>
-                    <MenuOption onSelect={deleteTrolley}/>
-                  </MenuOptions>
-                </Menu>
+                <MenuProvider>
+                  <Menu>
+                    <MenuTrigger text='edit' />
+                    <MenuOptions>
+                      <MenuOption onSelect={deleteTrolley}/>
+                    </MenuOptions>
+                  </Menu>
+                </MenuProvider>
               ),
               headerRightContainerStyle: {paddingRight: 5}
             }}/>

@@ -7,12 +7,13 @@ import QRCode from 'react-native-qrcode-svg'
 
 const Tab = createMaterialBottomTabNavigator();
 
-function PayScreen({ trolley, dispatch, navigation }) {
+function PayScreen({ trolley, dispatch, route, navigation }) {
+  const { orderId } = route.params;
   return (
      <View style={styles.container}>
        <Text style={{ fontSize: 20, textAlign:'center', paddingBottom: 30, color: 'green' }}>Show the QR code below to cashier</Text>
        <QRCode
-         value={JSON.stringify(trolley)}
+         value={JSON.stringify(orderId)}
          color={'black'}
          backgroundColor={'white'}
          size={300}

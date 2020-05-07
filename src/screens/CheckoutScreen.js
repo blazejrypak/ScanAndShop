@@ -1,4 +1,11 @@
-import {deleteTrolleyListItem, getTrolley, getTrolleyItemDetails, getTrolleyItems, updateTrolleyItem} from "../actions";
+import {
+  checkout,
+  deleteTrolleyListItem,
+  getTrolley,
+  getTrolleyItemDetails,
+  getTrolleyItems,
+  updateTrolleyItem
+} from "../actions";
 import {Alert, FlatList, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import {Button, Card, Divider, Icon, ListItem} from "react-native-elements";
 import Counter from "../components/Counter";
@@ -93,7 +100,11 @@ function CheckoutScreen({trolley, jwt, dispatch, navigation}) {
           title="Checkout"
           buttonStyle={{ backgroundColor: 'green' }}
           titleStyle={{ fontWeight: 'bold' }}
-          onPress={() => navigation.navigate('PayScreen')}
+          onPress={() => {
+            const order_id = trolley.trolleyId;
+            dispatch(checkout(jwt, trolley));
+            navigation.navigate('PayScreen', {"orderId": order_id});
+          }}
           disabled={trolley.trolleyItems.length === 0}
         />
       </View>
