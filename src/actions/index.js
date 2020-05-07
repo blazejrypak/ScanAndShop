@@ -89,6 +89,36 @@ export const register = (user) => {
   }
 }
 
+export const subscribe_news = (jwt, subscribe_value) => {
+  return dispatch => {
+    const requestOptions = {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `${jwt}`
+      }
+    }
+    const data = {
+      "subs": subscribe_value
+    }
+    Axios.post(`http://${DOMAIN}/user/subscription`, data, requestOptions)
+      .then((response) => {
+        dispatch(alertActions.success('Request successful'));
+        dispatch(subscribe(subscribe_value));
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(alertActions.error("error to get trolley" + err));
+      });
+  }
+  function subscribe(value) {
+    return {
+      type: userConstants.SUBSCRIBE,
+      subscription: value,
+    }
+  }
+}
+
 export const getTrolley = (jwt) => {
   return dispatch => {
     const requestOptions = {
@@ -98,7 +128,7 @@ export const getTrolley = (jwt) => {
         'Authorization': `${jwt}`
       }
     }
-    Axios.get(`http://${DOMAIN}/shopping/cart`, requestOptions)
+    Axios.get(`http://${DOMAIN}/shopping/cart/new`, requestOptions)
       .then((response) => {
         dispatch(alertActions.success('Request successful'));
         dispatch(get_trolley(response.data.id));

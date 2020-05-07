@@ -47,3 +47,19 @@ export const registration = (state = {}, action) => {
   }
 }
 
+const userBioInitialState = {
+  subscription: false,
+  user: null
+}
+
+export const userBioReducer = (state = userBioInitialState, action) => {
+  switch (action.type) {
+    case userConstants.SUBSCRIBE:
+      return { subscription: action.subscription }
+    case userConstants.UPDATE_USER_BIO:
+      return { user: action.user }
+    default:
+      return state;
+  }
+}
+

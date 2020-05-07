@@ -6,8 +6,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import React from "react";
+import {subscribe_news} from "../actions";
 
-function UserProfileScreen({ user, dispatch, navigation }) {
+function UserProfileScreen({ jwt, userBio, dispatch, navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}></View>
@@ -17,8 +18,8 @@ function UserProfileScreen({ user, dispatch, navigation }) {
           <Text>R. Hranol</Text>
           <Text style={styles.info}>Mobile developer</Text>
           <Text style={styles.description}>Za všetko môže Radičovej vláda :)</Text>
-          <TouchableOpacity style={styles.buttonContainer}>
-            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Subscribe</Text>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => dispatch(subscribe_news(jwt, !userBio.subscription))}>
+            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{ userBio.subscription ? 'Unsubscribe' : 'Subscribe'}</Text>
           </TouchableOpacity>
         </View>
       </View>

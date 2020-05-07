@@ -10,7 +10,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ScannerScreen from "./src/screens/ScannerScreen";
 import ShoppingScreen from "./src/screens/ShoppingScreen";
 import ShoppingListScreen from "./src/screens/ShoppingListScreen";
-import {Button} from "react-native-elements";
+import {Button, Icon} from "react-native-elements";
 import PayScreen from "./src/screens/PayScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
@@ -18,10 +18,18 @@ import {authentication} from "./src/reducers/authReducer";
 import {strings} from "./src/locales/i18n";
 import CheckoutScreen from "./src/screens/CheckoutScreen";
 import UserProfileScreen from "./src/screens/UserProfileScreen";
+import {Alert} from "react-native";
+import { MenuProvider } from 'react-native-popup-menu';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
 // Connect the screens to Redux
 let HomeContainer = connect(state => ({auth: state.authentication}))(HomeScreen);
-let UserProfileContainer = connect(state => ({user: state.authentication}))(UserProfileScreen);
+let UserProfileContainer = connect(state => ({jwt: state.authentication.jwt, userBio: state.userBio}))(UserProfileScreen);
 let LoginContainer = connect(state => ({auth: state.authentication}))(LoginScreen);
 let SignUpContainer = connect(state => ({auth: state.registration}))(SignUpScreen);
 // Create our stack navigator
@@ -35,6 +43,22 @@ let ShoppingListContainer = connect(state => ({shoppingList: state.shoppingList,
 let PayContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(PayScreen);
 let ScannerContainer = connect(state => ({trolley: state.trolley, jwt: state.authentication.jwt}))(ScannerScreen);
 
+const deleteTrolley = () =>
+  Alert.alert(
+    "Delete shopping cart?",
+    "Do you like to delete shopping cart?",
+    [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel"
+      },
+      { text: "OK", onPress: () => console.log("OK Pressed") }
+    ],
+    { cancelable: false }
+  );
+
+
 function InitComponent ({auth, dispatch, navigation}) {
   return (
     <NavigationContainer>
@@ -44,7 +68,17 @@ function InitComponent ({auth, dispatch, navigation}) {
             <RootStack.Screen name="Home" component={HomeContainer}/>
             <RootStack.Screen name="Shopping" component={TrolleyContainer}/>
             <RootStack.Screen name="ScannerScreen" component={ScannerContainer}/>
-            <RootStack.Screen name="Checkout" component={CheckoutContainer}/>
+            <RootStack.Screen name="Checkout" component={CheckoutContainer} options={{
+              headerRight: () => (
+                <Menu>
+                  <MenuTrigger text='edit' />
+                  <MenuOptions>
+                    <MenuOption onSelect={deleteTrolley}/>
+                  </MenuOptions>
+                </Menu>
+              ),
+              headerRightContainerStyle: {paddingRight: 5}
+            }}/>
             <RootStack.Screen name="UserProfile" component={UserProfileContainer}/>
             <RootStack.Screen
               name="PayScreen"
