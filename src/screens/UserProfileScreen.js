@@ -9,7 +9,6 @@ import React from "react";
 import {send_emails, subscribe_news} from "../actions";
 
 function UserProfileScreen({ jwt, userBio, dispatch, navigation }) {
-  console.log(userBio);
   return (
     <View style={styles.container}>
       <View style={styles.header}></View>

@@ -71,7 +71,7 @@ export const register = (user) => {
     "username": user.username,
     "email": user.email,
     "password": user.password,
-    "subs": user.subscription
+    "subscription": user.subscription
   }
   return dispatch => {
     dispatch(request(user));
@@ -241,7 +241,7 @@ export const checkout = (jwt, trolley) => {
   }
 }
 
-export const send_emails = (jwt) => {
+export const send_emails = jwt => {
   return dispatch => {
     const requestOptions = {
       headers: {
@@ -250,7 +250,7 @@ export const send_emails = (jwt) => {
         'Authorization': `${jwt}`
       }
     }
-    Axios.post(`http://${DOMAIN}/email/katalog`, requestOptions)
+    Axios.post(`http://${DOMAIN}/email/katalog`, {}, requestOptions)
       .then((response) => {
         dispatch(alertActions.success('Request successful'));
       })

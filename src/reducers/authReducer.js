@@ -62,7 +62,8 @@ export const userBioReducer = (state = userBioInitialState, action) => {
     case userConstants.UPDATE_USER_BIO:
       return {
         ...state,
-        user: action.user
+        user: action.user,
+        subscription: action.user.subscription
       }
     default:
       return state;
