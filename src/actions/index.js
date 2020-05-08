@@ -1,3 +1,5 @@
+import {func} from "prop-types";
+
 const axios = require('axios');
 
 const cheerio = require('react-native-cheerio')
@@ -31,12 +33,20 @@ export const login = (username, password) => {
     Axios.post(`http://${DOMAIN}/login`, user_json)
       .then((response) => {
         dispatch(success(user, response.data[0].token));
+        dispatch(update_user_bio(response.data[0].user))
         dispatch(alertActions.success("Logged in"));
       })
       .catch(error => {
         dispatch(failure(error.response.msg));
         dispatch(alertActions.error(error.response.msg));
       });
+  }
+
+  function update_user_bio(user) {
+    return {
+      type: userConstants.UPDATE_USER_BIO,
+      user
+    }
   }
 
   function request(user) {
@@ -228,6 +238,26 @@ export const checkout = (jwt, trolley) => {
     return {
       type: CHECKOUT
     }
+  }
+}
+
+export const send_emails = (jwt) => {
+  return dispatch => {
+    const requestOptions = {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `${jwt}`
+      }
+    }
+    Axios.post(`http://${DOMAIN}/email/katalog`, requestOptions)
+      .then((response) => {
+        dispatch(alertActions.success('Request successful'));
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(alertActions.error("error to get trolley" + err));
+      });
   }
 }
 
