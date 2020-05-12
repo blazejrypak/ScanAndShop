@@ -16,17 +16,17 @@ const shoppingListReducer = (state = initialState, action) => {
   }
   switch (action.type) {
     case ADD_SHOPPING_LIST_ITEM:
-      return  {
+      return {
         ...state,
         shoppingList: [...state.shoppingList, {id: action.id, name: action.name, count: action.count}]
       };
     case UPDATE_SHOPPING_LIST_ITEM:
-      return  {
+      return {
         ...state,
         shoppingList: state.shoppingList.map(item => item.id === action.id ? {...item, count: action.count} : item),
       };
     case DELETE_SHOPPING_LIST_ITEM:
-      return  {
+      return {
         ...state,
         shoppingList: state.shoppingList.filter(item => item.id !== action.id),
       };

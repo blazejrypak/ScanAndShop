@@ -1,26 +1,20 @@
-import {func} from "prop-types";
-
-const axios = require('axios');
-
-const cheerio = require('react-native-cheerio')
 import {
   ADD_SHOPPING_LIST_ITEM,
   ADD_TROLLEY_ITEM,
   alertConstants,
-  CHANGE_INPUT_ITEM_NAME, CHECKOUT,
+  CHANGE_INPUT_ITEM_NAME,
+  CHECKOUT,
   DELETE_SHOPPING_LIST_ITEM,
   DELETE_TROLLEY_ITEM,
-  GET_TROLLEY, GET_TROLLEY_ITEM_DETAILS,
+  GET_TROLLEY,
+  GET_TROLLEY_ITEM_DETAILS,
   UPDATE_SHOPPING_LIST_ITEM,
   UPDATE_TROLLEY_ITEM,
   userConstants,
 } from "../constants/action_types";
 import Axios from "axios";
 
-let nextTrolleyItemId = 24522;
-let nextShoppingListItemId = 24621;
-
-let DOMAIN = '10.10.10.48:5000'
+import {DOMAIN, nextShoppingListItemId} from '../_helpers/config'
 
 export const login = (username, password) => {
   const user_json = {
@@ -121,6 +115,7 @@ export const subscribe_news = (jwt, subscribe_value) => {
         dispatch(alertActions.error("error to get trolley" + err));
       });
   }
+
   function subscribe(value) {
     return {
       type: userConstants.SUBSCRIBE,
@@ -148,20 +143,11 @@ export const getTrolley = (jwt) => {
         dispatch(alertActions.error("error to get trolley" + err));
       });
   }
+
   function get_trolley(id) {
     return {
       type: GET_TROLLEY,
       trolleyId: id,
-    }
-  }
-}
-
-export function getAuthHeaders(jwt) {
-  return {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `${jwt}`
     }
   }
 }
@@ -185,18 +171,19 @@ export const getTrolleyItems = (trolleyId, jwt) => {
         dispatch(alertActions.error("error to get trolley" + err));
       });
   }
+
   function get_trolley_items(dispatch, trolleyItemsList) {
     console.log(trolleyItemsList);
     if (trolleyItemsList) {
       trolleyItemsList.map((item) => {
         console.log('item: ', item);
         dispatch({
-            type: ADD_TROLLEY_ITEM,
-            item: {
-              'id': item.id,
-              'quantity': item.quantity,
-              'product': item.product
-            }
+          type: ADD_TROLLEY_ITEM,
+          item: {
+            'id': item.id,
+            'quantity': item.quantity,
+            'product': item.product
+          }
         })
       })
     }
@@ -234,6 +221,7 @@ export const checkout = (jwt, trolley) => {
         dispatch(alertActions.error("error to get trolley" + err));
       });
   }
+
   function checkout_order() {
     return {
       type: CHECKOUT
@@ -257,43 +245,6 @@ export const send_emails = jwt => {
       .catch(err => {
         console.log(err);
         dispatch(alertActions.error("error to get trolley" + err));
-      });
-  }
-}
-
-export const pushTrolleyItem = (item, trolleyId, jwt) => {
-  let product = {
-    "id": item.id,
-    "name": item.product.name,
-    "description": item.product.description,
-    "price": item.product.price,
-    "store": {
-      "id": item.product.store.id,
-      "name": item.product.store.name,
-      "description": item.product.store.description
-    }
-  }
-  Axios.post(`http://${DOMAIN}/stores/1/products`, product, getAuthHeaders(jwt))
-    .then((response) => {
-      console.log(response.data);
-      dispatch(alertActions.success('Request successful'));
-    })
-    .catch(err => {
-      console.log(err);
-    })
-    .then(() => {
-      pushItemToCart({"product": product, "quantity": item.quantity});
-      });
-
-  function pushItemToCart(item) {
-    console.log(item);
-    Axios.post(`http://${DOMAIN}/cart/${trolleyId}/items`, item, getAuthHeaders(jwt))
-      .then((response) => {
-        console.log(response.data);
-        dispatch(alertActions.success('Request successful'));
-      })
-      .catch(err => {
-        console.log(err);
       });
   }
 }
@@ -323,6 +274,7 @@ export const addTrolleyItem = (name, price, count, barcode, trolleyId, jwt) => {
         dispatch(alertActions.error("error to get item" + err));
       })
   }
+
   function add_product(item) {
     return {
       type: ADD_TROLLEY_ITEM,

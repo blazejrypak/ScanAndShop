@@ -23,5 +23,19 @@
   "cancel": "Cancel",
   "reject": "Reject",
   "approve": "Approve",
-  "enter_item": "Enter item"
+  "enter_item": "Enter item",
+  "subscribe": "Subscribe",
+  "unsubscribe": "Unsubscribe",
+  "sendEmail": "Send email",
+  "subscribeNews": "Subscribe to our newsletter",
+  "price": "Price",
+  "discount": "Discount",
+  "sum": "Sum",
+  "checkout": "Checkout",
+  "scanBarCode": {
+    "scanAgain": "Tap to Scan Again",
+  },
+  "payScreen": {
+    "title": "Show the QR code below to cashier"
+  }
 }

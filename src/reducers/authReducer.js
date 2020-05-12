@@ -7,7 +7,7 @@ const initialState = {
   loggedIn: false
 }
 
-export const authentication = (state=initialState, action) =>  {
+export const authentication = (state = initialState, action) => {
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:
       return {
@@ -37,7 +37,7 @@ export const authentication = (state=initialState, action) =>  {
 export const registration = (state = {}, action) => {
   switch (action.type) {
     case userConstants.REGISTER_REQUEST:
-      return { registering: true, user: action.user};
+      return {registering: true, user: action.user};
     case userConstants.REGISTER_SUCCESS:
       return {registering: false, user: action.user};
     case userConstants.REGISTER_FAILURE:

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import React, {useState, useEffect} from 'react';
+import {Text, View, StyleSheet, Button} from 'react-native';
+import {BarCodeScanner} from 'expo-barcode-scanner';
+import {strings} from "../locales/i18n";
 
 export default function ScanBarCode({onBarCodeScanned}) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -8,12 +9,12 @@ export default function ScanBarCode({onBarCodeScanned}) {
 
   useEffect(() => {
     (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      const {status} = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === 'granted');
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({type, data}) => {
     setScanned(true);
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     onBarCodeScanned(type, data);
@@ -38,7 +39,8 @@ export default function ScanBarCode({onBarCodeScanned}) {
         style={StyleSheet.absoluteFillObject}
       />
 
-      {scanned && <Button style={{backgroundColor: '#fff', color: '#fff'}} title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+      {scanned && <Button style={{backgroundColor: '#fff', color: '#fff'}} title={strings('scanBarCode.scanAgain')}
+                          onPress={() => setScanned(false)}/>}
     </View>
   );
 }

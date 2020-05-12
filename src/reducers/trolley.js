@@ -1,8 +1,10 @@
 import {
-  GET_TROLLEY,
   ADD_TROLLEY_ITEM,
-  UPDATE_TROLLEY_ITEM,
-  DELETE_TROLLEY_ITEM, DELETE_SHOPPING_LIST_ITEM, GET_TROLLEY_ITEM_DETAILS, CHECKOUT
+  CHECKOUT,
+  DELETE_TROLLEY_ITEM,
+  GET_TROLLEY,
+  GET_TROLLEY_ITEM_DETAILS,
+  UPDATE_TROLLEY_ITEM
 } from "../constants/action_types";
 
 const initialState = {
@@ -38,14 +40,14 @@ const trolleyReducer = (state = initialState, action) => {
       };
       let sum = 0;
       for (let i = 0; i < newSt.trolleyItems.length; i++) {
-        if (newSt.trolleyItems[i] !== undefined) {
+        if (newSt.trolleyItems[i] !== undefined) { // calculate new sum for product
           sum += (newSt.trolleyItems[i].price - newSt.trolleyItems[i].discount) * newSt.trolleyItems[i].quantity;
         }
       }
       newSt.trolleySum = sum.toFixed(2);
       return newSt;
     case DELETE_TROLLEY_ITEM:
-      return  {
+      return {
         ...state,
         trolleyItems: state.trolleyItems.filter(item => item.id !== action.id),
       };

@@ -70,7 +70,7 @@ function ShoppingScreen({trolley, jwt, dispatch, navigation}) {
     dispatch(updateTrolleyItem(id, number));
   }
 
-  const tableHead = ['Price', 'discount', 'Sum'];
+  const tableHead = [strings('price'), strings('discount'), strings('sum')];
   let rowData = (price, discount, sum) => {
     return [
       <Text style={{alignSelf: 'center', fontWeight: 'bold', fontSize: 20}}>{price}</Text>,

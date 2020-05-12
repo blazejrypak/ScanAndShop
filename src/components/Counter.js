@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import React, {Component} from "react";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 
 export default class Counter extends Component {
@@ -16,27 +16,27 @@ export default class Counter extends Component {
   }
 
   onPressMinus() {
-    const { number } = this.state;
+    const {number} = this.state;
     const minusNumber = number - 1;
 
     if (number === this.props.min) {
       return;
     }
 
-    return this.setState({ number: minusNumber }, () =>
+    return this.setState({number: minusNumber}, () =>
       this.props.onChange(minusNumber, "-", this.props.id)
     );
   }
 
   onPressPlus() {
-    const { number } = this.state;
+    const {number} = this.state;
     const plusNumber = number + 1;
 
     if (number === this.props.max) {
       return;
     }
 
-    return this.setState({ number: plusNumber }, () =>
+    return this.setState({number: plusNumber}, () =>
       this.props.onChange(plusNumber, "+", this.props.id)
     );
   }
@@ -88,7 +88,7 @@ export default class Counter extends Component {
       touchableColor,
       plusIcon
     } = this.props;
-    const isPlusDisabled = max == this.state.number;
+    const isPlusDisabled = max === this.state.number;
     const buttonStyle = {
       borderColor: isPlusDisabled ? touchableDisabledColor : touchableColor
     };
@@ -122,13 +122,13 @@ export default class Counter extends Component {
   }
 
   render() {
-    const { number } = this.state;
+    const {number} = this.state;
 
     return (
       <View style={Styles.container}>
         <View>{this.renderMinusButton()}</View>
         <View style={Styles.number}>
-          <Text style={[Styles.text, { color: this.props.textColor }]}>
+          <Text style={[Styles.text, {color: this.props.textColor}]}>
             {number}
           </Text>
         </View>

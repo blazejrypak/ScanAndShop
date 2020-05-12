@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import React from "react";
 import {send_emails, subscribe_news} from "../actions";
+import {strings} from "../locales/i18n";
 
 function UserProfileScreen({ jwt, userBio, dispatch, navigation }) {
   return (
@@ -19,11 +20,11 @@ function UserProfileScreen({ jwt, userBio, dispatch, navigation }) {
           <Text style={styles.info}>Mobile developer</Text>
           <Text style={styles.description}>Za všetko môže Radičovej vláda :)</Text>
           <TouchableOpacity style={styles.buttonContainer} onPress={() => dispatch(subscribe_news(jwt, !userBio.subscription))}>
-            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{ userBio.subscription ? 'Unsubscribe' : 'Subscribe'}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{ userBio.subscription ? strings('unsubscribe') : strings('subscribe')}</Text>
           </TouchableOpacity>
           { userBio && userBio.user && userBio.user.admin &&
           <TouchableOpacity onPress={() => dispatch(send_emails(jwt))}>
-            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{ 'Send emails' }</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{ strings('sendEmail') }</Text>
           </TouchableOpacity>
           }
         </View>

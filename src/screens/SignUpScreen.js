@@ -61,7 +61,7 @@ function SignUpScreen({ auth, dispatch, navigation }) {
        </TouchableOpacity>
        <CheckBox
          center
-         title='Subscribe to our newsletter'
+         title={strings('subscribeNews')}
          checked={subscription}
          onPress={() => setInputs(inputs => ({ ...inputs, subscription: !subscription}))}
        />

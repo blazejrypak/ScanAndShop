@@ -97,7 +97,7 @@ function CheckoutScreen({trolley, jwt, dispatch, navigation}) {
         justifyContent: 'flex-end',
       }}>
         <Button
-          title="Checkout"
+          title={strings('checkout')}
           buttonStyle={{ backgroundColor: 'green' }}
           titleStyle={{ fontWeight: 'bold' }}
           onPress={() => {

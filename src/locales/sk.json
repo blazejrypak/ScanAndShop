@@ -23,5 +23,19 @@
   "cancel": "Zrušiť",
   "reject": "Odmietnuť",
   "approve": "Potvrdiť",
-  "enter_item": "Zadajte položku"
+  "enter_item": "Zadajte položku",
+  "subscribe": "Odoberať",
+  "unsubscribe": "Zrušiť odber",
+  "sendEmail": "Poslať email",
+  "subscribeNews": "Odoberaj náš newsletter",
+  "price": "Cena",
+  "discount": "Zľava",
+  "sum": "Suma",
+  "checkout": "Zaplatiť",
+  "scanBarCode": {
+    "scanAgain": "Tap to Scan Again",
+  },
+  "payScreen": {
+    "title": "Zobraz QR kod pokladníkovi"
+  }
 }
